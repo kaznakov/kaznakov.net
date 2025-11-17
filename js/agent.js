@@ -1,7 +1,7 @@
 // js/agent.js
 
 // Адрес backend-а Миранды
-const MIRANDA_API_URL = "http://localhost:3030/api/chat";
+const MIRANDA_API_URL = "https://miranda-kaznakov.onrender.com/api/chat";
 
 
 document.addEventListener("DOMContentLoaded", function () {
