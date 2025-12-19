@@ -1,0 +1,191 @@
+/* css/custom.css */
+/* ================================================================
+   CUSTOM OVERRIDES
+   ------------------------------------------------
+   Что делаю:
+   1) Убираю серую рамку (если шаблон её рисует).
+   2) Маска: накладываю PNG поверх превью (видна по умолчанию, исчезает при hover).
+      ✅ Путь к маске: ../images/mask.png (как ты написал).
+   3) Карусель:
+      - видно РОВНО 3 карточки на десктопе
+      - остальные доступны свайпом/тачем/колесом и по стрелкам
+      - scrollbar прячу, чтобы не ломать дизайн (управление через стрелки/жесты)
+   ================================================================ */
+
+/* 1) Remove gray frame */
+.page-border { display: none !important; }
+#wrapper { margin: 0 !important; padding: 0 !important; }
+
+/* -----------------------------
+   3) Carousel layout
+   ----------------------------- */
+
+/* Оболочка карусели (нужна, чтобы стрелки стояли поверх) */
+.carousel {
+  position: relative;
+  width: 100%;
+}
+
+/* Лента карусели:
+   ✅ overflow-x:auto = можно свайпать пальцем (мобильные)
+   ✅ display:flex + nowrap = элементы в одну линию
+*/
+.carousel-track {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+
+  scroll-behavior: smooth;
+
+  /* ✅ Улучшаю “ощущение” карусели: элементы прилипают к сетке */
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 44px;
+  scroll-padding-right: 44px;
+
+  /* ✅ Визуальная подсказка: можно “хватать” и тянуть мышью */
+  cursor: grab;
+  user-select: none;
+
+  /* ✅ IE/старые Edge: прячу скроллбар */
+  -ms-overflow-style: none;
+
+  /* Небольшой внутренний отступ, чтобы стрелки не перекрывали контент визуально */
+  padding: 8px 44px 16px;
+
+  /* Прячем скроллбар (остается управление: тач/колесо/стрелки) */
+  scrollbar-width: none;         /* Firefox */
+}
+.carousel-track::-webkit-scrollbar { height: 0; } /* WebKit */
+
+/* Карточка:
+   ✅ на десктопе ровно 3 в видимой области
+   Важно: вместо gap использую padding, чтобы точно не “съедать” ширину.
+*/
+.carousel-item {
+  flex: 0 0 33.3333%;
+  max-width: 33.3333%;
+  box-sizing: border-box;
+
+  padding: 0 10px;  /* визуальный “gap” */
+  position: relative;
+  overflow: hidden; /* чтобы маска не выходила за край */
+
+  /* ВАЖНО: сбрасываю возможные сеточные float/width из шаблона */
+  float: none !important;
+  margin: 0 !important;
+  width: auto !important;
+
+  display: block;
+
+  /* ✅ Для scroll-snap: каждый элемент прилипает к началу */
+  scroll-snap-align: start;
+}
+
+/* Картинка внутри карточки */
+.carousel-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Адаптив:
+   - планшет: 2 карточки
+   - телефон: 1 карточка (удобнее свайп)
+*/
+@media (max-width: 980px) {
+  .carousel-item { flex-basis: 50%; max-width: 50%; }
+}
+@media (max-width: 640px) {
+  .carousel-item { flex-basis: 88%; max-width: 88%; }
+  .carousel-track { padding-left: 44px; padding-right: 44px; }
+}
+
+/* -----------------------------
+   Стрелки карусели
+   ----------------------------- */
+.carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+
+  border: 1px solid rgba(0,0,0,0.25);
+  background: rgba(255,255,255,0.85);
+  color: rgba(0,0,0,0.75);
+
+  cursor: pointer;
+  line-height: 34px;
+  font-size: 22px;
+  text-align: center;
+
+  transition: opacity 160ms ease, background 160ms ease;
+}
+
+.carousel-nav:hover {
+  background: rgba(255,255,255,0.95);
+}
+
+.carousel-nav.prev { left: 8px; }
+.carousel-nav.next { right: 8px; }
+
+/* -----------------------------
+   2) PNG mask overlay
+   -----------------------------
+   Важно:
+   - Маска вешается на .carousel-item (то есть только на превью)
+   - В lightbox (Featherlight) маски нет, потому что там другой DOM.
+*/
+.carousel-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none; /* клики уходят в <a> */
+
+  /* ✅ твой новый путь */
+  background-image: url("../images/mask.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  opacity: 0.6;
+  transition: opacity 220ms ease;
+}
+
+/* При наведении маска исчезает */
+.carousel-item:hover::after {
+  opacity: 0;
+}
+
+/* Когда пользователь тянет ленту мышью — меняю курсор на “grabbing” */
+.carousel-track.is-dragging { cursor: grabbing; }
+
+/* Лёгкие “градиентные” края — визуально подсказывают, что контент листается */
+.carousel::before,
+.carousel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 44px; /* совпадает с padding у трека */
+  pointer-events: none;
+  z-index: 9; /* ниже кнопок (10), но выше картинок */
+}
+
+.carousel::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(255,255,255,0.95), rgba(255,255,255,0));
+}
+
+.carousel::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(255,255,255,0.95), rgba(255,255,255,0));
+}

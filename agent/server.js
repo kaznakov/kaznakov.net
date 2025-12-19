@@ -8,16 +8,22 @@ const OpenAI = require("openai");
 require("dotenv").config({ path: path.join(__dirname, ".env") });
 
 const app = express();
+
+// ✅ Локально будет 3030 (если PORT не задан)
+// В проде Render сам даёт process.env.PORT
 const PORT = process.env.PORT || 3030;
 
-// ---------- OpenAI client ----------
+// ✅ Модель берём из env, чтобы легко менять без правки кода
+// По умолчанию ставлю актуальную и быструю модель.
+// (gpt-5-mini есть в списке актуальных моделей) :contentReference[oaicite:2]{index=2}
+const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-5-mini";
 
+// ---------- OpenAI client ----------
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
 // ---------- Load prompts ----------
-
 const PROMPTS_DIR = path.join(__dirname, "prompts");
 
 function loadText(fileName) {
@@ -36,7 +42,6 @@ const modesEn = loadJSON("modes_en.json");
 const modesRu = loadJSON("modes_ru.json");
 
 function detectLangFromText(text) {
-  // простейший детектор: есть кириллица — считаем, что ru
   return /[а-яА-ЯёЁ]/.test(text) ? "ru" : "en";
 }
 
@@ -49,14 +54,29 @@ function buildSystemPrompt(lang, modeName) {
 }
 
 // ---------- Middleware ----------
-
 app.use(cors());
 app.use(express.json());
 
-// ---------- API: /api/chat ----------
+// ✅ Быстрый healthcheck для локальной диагностики
+app.get("/health", (req, res) => {
+  res.json({
+    ok: true,
+    port: PORT,
+    model: OPENAI_MODEL,
+    hasKey: Boolean(process.env.OPENAI_API_KEY)
+  });
+});
 
+// ---------- API: /api/chat ----------
 app.post("/api/chat", async (req, res) => {
   try {
+    if (!process.env.OPENAI_API_KEY) {
+      return res.status(500).json({
+        error: "Missing OPENAI_API_KEY",
+        details: "Создай agent/.env и добавь OPENAI_API_KEY=..."
+      });
+    }
+
     const { message, history = [], mode, lang } = req.body || {};
 
     if (!message || typeof message !== "string") {
@@ -64,16 +84,12 @@ app.post("/api/chat", async (req, res) => {
     }
 
     const langEffective = lang || detectLangFromText(message);
-    const modeEffective = mode || "mentor"; // по умолчанию учимся :)
+    const modeEffective = mode || "mentor";
 
     const systemPrompt = buildSystemPrompt(langEffective, modeEffective);
 
     const messages = [];
-
-    messages.push({
-      role: "system",
-      content: systemPrompt
-    });
+    messages.push({ role: "system", content: systemPrompt });
 
     if (Array.isArray(history)) {
       history.forEach((m) => {
@@ -86,7 +102,7 @@ app.post("/api/chat", async (req, res) => {
     messages.push({ role: "user", content: message });
 
     const completion = await client.chat.completions.create({
-      model: "gpt-5.1-mini", // замени на нужную модель
+      model: OPENAI_MODEL,
       messages,
       temperature: 0.7
     });
@@ -97,7 +113,6 @@ app.post("/api/chat", async (req, res) => {
       reply,
       lang: langEffective,
       mode: modeEffective
-      // при желании можно добавить systemPrompt для отладки
     });
   } catch (err) {
     console.error("Error in /api/chat:", err);
@@ -109,7 +124,7 @@ app.post("/api/chat", async (req, res) => {
 });
 
 // ---------- Start server ----------
-
 app.listen(PORT, () => {
   console.log(`Miranda agent listening on http://localhost:${PORT}`);
+  console.log(`Healthcheck: http://localhost:${PORT}/health`);
 });

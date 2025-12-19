@@ -1,8 +1,30 @@
 // js/agent.js
 
-// Адрес backend-а Миранды
-const MIRANDA_API_URL = "https://kaznakov-net.onrender.com/api/chat";
+// ============================================================
+// ✅ ВАЖНОЕ ИЗМЕНЕНИЕ:
+// Автовыбор backend-а Миранды:
+// - локально (localhost/127.0.0.1) -> http://localhost:3030/api/chat
+// - прод (всё остальное)          -> Render URL
+// Это убирает ручные правки и ошибки “забыл вернуть URL”.
+// ============================================================
 
+function getMirandaApiUrl() {
+  const host = window.location.hostname;
+  const isLocal =
+    host === "localhost" ||
+    host === "127.0.0.1" ||
+    host === "0.0.0.0";
+
+  if (isLocal) {
+    return "http://localhost:3030/api/chat";
+  }
+
+  // PROD (Render)
+  return "https://kaznakov-net.onrender.com/api/chat";
+}
+
+// Адрес backend-а Миранды (локально/прод выбирается автоматически)
+const MIRANDA_API_URL = getMirandaApiUrl();
 
 document.addEventListener("DOMContentLoaded", function () {
   // --- Находим элементы в DOM ---
@@ -20,10 +42,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // --- Состояние агента ---
-  const history = [];        // сюда складываем пары user/assistant для контекста
-  let currentMode = "mentor"; // режим по умолчанию — тренировка промптов
-  let currentLang = "ru";     // язык по умолчанию (можно поменять /lang en)
-  let firstOpen = true;       // чтобы один раз написать приветствие
+  const history = [];
+  let currentMode = "mentor";
+  let currentLang = "ru";
+  let firstOpen = true;
 
   function appendMessage(role, text) {
     const div = document.createElement("div");
@@ -34,15 +56,16 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function openWindow() {
-    win.style.display = "flex"; // окно сверстано как flex-column
+    win.style.display = "flex";
     input.focus();
 
     if (firstOpen) {
       appendMessage("agent", "Привет! Я Миранда. Чем могу помочь?");
       appendMessage(
         "agent",
-        "Я умею работать в разных режимах. Попробуйте, например: /mode critic или /mode optimizer. Язык можно менять командой /lang ru или /lang en."
+        "Я умею работать в разных режимах. Попробуйте: /mode critic или /mode optimizer. Язык: /lang ru или /lang en."
       );
+      appendMessage("agent", "Текущий backend: " + MIRANDA_API_URL);
       firstOpen = false;
     }
   }
@@ -53,33 +76,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // клик по квадрату — открыть/закрыть
   toggle.addEventListener("click", () => {
-    if (win.style.display === "flex") {
-      closeWindow();
-    } else {
-      openWindow();
-    }
+    if (win.style.display === "flex") closeWindow();
+    else openWindow();
   });
 
   // крестик
-  if (closeBtn) {
-    closeBtn.addEventListener("click", closeWindow);
-  }
-
-  // ---------- ОБРАБОТЧИКИ КНОПОК И ФОРМЫ ----------
-
-  // Клик по квадрату агента — открыть/закрыть окно
-  toggle.addEventListener("click", () => {
-    if (win.style.display === "flex") {
-      closeWindow();
-    } else {
-      openWindow();
-    }
-  });
-
-  // Клик по крестику — закрыть окно
-  if (closeBtn) {
-    closeBtn.addEventListener("click", closeWindow);
-  }
+  if (closeBtn) closeBtn.addEventListener("click", closeWindow);
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -88,49 +90,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ---------- 1. Команда /mode ----------
     if (text.startsWith("/mode ")) {
-      const m = text.slice(6).trim(); // всё после "/mode "
+      const m = text.slice(6).trim();
       if (m) {
         currentMode = m;
-        appendMessage(
-          "agent",
-          `Режим Миранды переключён на: ${m}. Попробуйте задать тот же вопрос ещё раз — я буду отвечать в новом стиле.`
-        );
+        appendMessage("agent", `Режим Миранды переключён на: ${m}.`);
       } else {
-        appendMessage(
-          "agent",
-          "Укажите режим, например: /mode mentor, /mode critic, /mode optimizer, /mode technical, /mode creative."
-        );
+        appendMessage("agent", "Укажите режим, например: /mode mentor /mode critic /mode optimizer.");
       }
       input.value = "";
-      return; // в backend не идём, это локальная команда
+      return;
     }
 
     // ---------- 2. Команда /lang ----------
     if (text.startsWith("/lang ")) {
-      const l = text.slice(6).trim().toLowerCase(); // ru / en
+      const l = text.slice(6).trim().toLowerCase();
       if (l === "ru" || l === "en") {
         currentLang = l;
-        appendMessage(
-          "agent",
-          l === "ru"
-            ? "Язык ответов переключён на русский."
-            : "Language switched to English."
-        );
+        appendMessage("agent", l === "ru" ? "Язык: русский." : "Language: English.");
       } else {
         appendMessage("agent", "Доступные языки: ru, en. Пример: /lang ru");
       }
       input.value = "";
-      return; // тоже локальная команда
+      return;
     }
 
-    // ---------- 3. Обычное сообщение пользователя ----------
+    // ---------- 3. Обычное сообщение ----------
     appendMessage("user", text);
     input.value = "";
     input.focus();
     sendBtn.disabled = true;
 
     try {
-      // отправляем запрос Миранде
       const resp = await fetch(MIRANDA_API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -142,20 +132,24 @@ document.addEventListener("DOMContentLoaded", function () {
         })
       });
 
-      const data = await resp.json();
+      let data;
+      try {
+        data = await resp.json();
+      } catch (_) {
+        throw new Error(`Backend вернул не-JSON. HTTP ${resp.status}`);
+      }
 
-      if (data.error) {
+      if (!resp.ok || data.error) {
         throw new Error(
-          typeof data.error === "string" ? data.error : JSON.stringify(data.error)
+          data?.details ||
+          data?.error ||
+          `HTTP ${resp.status}`
         );
       }
 
       const reply = data.reply || "(пустой ответ)";
-
-      // обновляем историю для контекста
       history.push({ role: "user", content: text });
       history.push({ role: "assistant", content: reply });
-
       appendMessage("agent", reply);
     } catch (err) {
       appendMessage("agent", "Ошибка: " + (err.message || err));
@@ -164,8 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // ---------- ДИНАМИЧЕСКИЙ ПОДЪЁМ КНОПОК И ОКНА НАД ФУТЕРОМ ----------
-
+  // --- Лифт кнопок над футером (как было) ---
   function updateFloatingButtonsOffset() {
     const scrollUpEl = document.getElementById("scrollUp");
     const agentEl = document.getElementById("ai-agent");
@@ -179,14 +172,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const footerRect = footer.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
 
-    // Насколько верх футера заехал в окно (если > 0 — футер "под ногами")
     const overlapFromBottom = viewportHeight - footerRect.top;
 
-    const baseBottomAgent = 50; // должно совпадать с CSS: bottom: 50px у #ai-agent
-    const safeGap = 30;         // зазор над футтером
+    const baseBottomAgent = 50;
+    const safeGap = 30;
 
     let shift = 0;
-
     if (overlapFromBottom > 0) {
       const needed = overlapFromBottom + safeGap - baseBottomAgent;
       shift = needed > 0 ? needed : 0;
@@ -200,5 +191,4 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("scroll", updateFloatingButtonsOffset);
   window.addEventListener("resize", updateFloatingButtonsOffset);
   updateFloatingButtonsOffset();
-
 });
