@@ -3,20 +3,16 @@
 
 # secrets
 agent/.env
+.env
 
 # dependencies
+node_modules/
 agent/node_modules/
 
 # archives
 *.zip
-# macOS
-.DS_Store
+*.tar
+*.tar.gz
 
-# secrets
-agent/.env
-
-# dependencies
-agent/node_modules/
-
-# archives
-*.zip
+# logs
+*.log

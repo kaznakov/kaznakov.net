@@ -1,4 +1,10 @@
 // agent/server.js
+//
+// Что изменено (коротко, по делу):
+// 1) УБРАЛ temperature: 0.7 из запроса к OpenAI,
+//    потому что текущая модель ругается: поддерживается только default (1).
+//    Если temperature не передавать — используется default и ошибки не будет.
+// 2) Остальное не трогаю: маршруты, prompts, healthcheck — как было.
 
 const express = require("express");
 const cors = require("cors");
@@ -9,13 +15,7 @@ require("dotenv").config({ path: path.join(__dirname, ".env") });
 
 const app = express();
 
-// ✅ Локально будет 3030 (если PORT не задан)
-// В проде Render сам даёт process.env.PORT
 const PORT = process.env.PORT || 3030;
-
-// ✅ Модель берём из env, чтобы легко менять без правки кода
-// По умолчанию ставлю актуальную и быструю модель.
-// (gpt-5-mini есть в списке актуальных моделей) :contentReference[oaicite:2]{index=2}
 const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-5-mini";
 
 // ---------- OpenAI client ----------
@@ -57,7 +57,7 @@ function buildSystemPrompt(lang, modeName) {
 app.use(cors());
 app.use(express.json());
 
-// ✅ Быстрый healthcheck для локальной диагностики
+// ✅ Healthcheck для диагностики
 app.get("/health", (req, res) => {
   res.json({
     ok: true,
@@ -101,10 +101,11 @@ app.post("/api/chat", async (req, res) => {
 
     messages.push({ role: "user", content: message });
 
+    // ✅ ВАЖНО: temperature не передаём — используем default,
+    // иначе модель может вернуть 400 "Unsupported value: temperature"
     const completion = await client.chat.completions.create({
       model: OPENAI_MODEL,
-      messages,
-      temperature: 0.7
+      messages
     });
 
     const reply = completion.choices[0]?.message?.content || "";
