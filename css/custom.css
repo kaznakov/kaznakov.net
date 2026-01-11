@@ -1,35 +1,313 @@
 /* css/custom.css */
-/* ================================================================
-   CUSTOM OVERRIDES
-   ------------------------------------------------
-   Что делаю:
-   1) Убираю серую рамку (если шаблон её рисует).
-   2) Маска: накладываю PNG поверх превью (видна по умолчанию, исчезает при hover).
-      ✅ Путь к маске: ../images/mask.png (как ты написал).
-   3) Карусель:
-      - видно РОВНО 3 карточки на десктопе
-      - остальные доступны свайпом/тачем/колесом и по стрелкам
-      - scrollbar прячу, чтобы не ломать дизайн (управление через стрелки/жесты)
-   ================================================================ */
+/* ==========================================================
+   Custom overrides for Namari
+   ========================================================== */
 
-/* 1) Remove gray frame */
-.page-border { display: none !important; }
-#wrapper { margin: 0 !important; padding: 0 !important; }
+/* ==========================================================
+   A) HEADER — язык/контакты справа на десктопе
+   ========================================================== */
 
-/* -----------------------------
-   3) Carousel layout
-   ----------------------------- */
+@media (min-width: 980px) {
 
-/* Оболочка карусели (нужна, чтобы стрелки стояли поверх) */
+  #header { position: relative; }
+
+  #header .row.clearfix .col-1 {
+    display: flex;
+    align-items: center;
+  }
+
+  #logo {
+    flex: 0 0 auto;
+    margin-right: 24px;
+  }
+
+  #nav-main {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+  }
+
+  #nav-main ul {
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+    margin: 0;
+    padding: 0;
+  }
+
+  #nav-main ul li a {
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  #header aside {
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+
+    margin: 0;
+    padding: 0;
+    z-index: 20;
+  }
+
+  .lang-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .lang-links a.lang-link {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+
+    color: rgba(0,0,0,0.72);
+
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    transition: opacity 160ms ease;
+  }
+
+  .lang-links a.lang-link:hover { opacity: 0.85; }
+
+  .lang-links a.lang-link.is-active {
+    color: rgba(0,0,0,0.95);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  #header aside .social-icons {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  #header aside .social-icons li,
+  #header aside .social-icons li a {
+    margin: 0;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+  }
+}
+
+/* ==========================================================
+   A2) MOBILE/TABLET — RU/EN ДОЛЖНЫ ВЫГЛЯДЕТЬ ОДИНАКОВО
+   И ВВЕРХУ, И ПРИ STICKY (ПРОКРУТКА ВНИЗ)
+   ========================================================== */
+
+@media (max-width: 979px) {
+
+  #header { position: relative; }
+
+  /* Базовое положение RU/EN (вверху страницы) */
+  #header aside {
+    position: absolute;
+    right: 76px;       /* место под кнопку меню справа */
+    top: 50%;
+    transform: translateY(-50%);
+
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+
+    margin: 0;
+    padding: 0;
+    z-index: 50;
+  }
+
+  /* ✅ КРИТИЧНО: повторяем ТО ЖЕ САМОЕ для sticky-состояний Namari
+     (иначе при прокрутке шаблон перезаписывает top/bottom/align-items) */
+  .is-sticky #header aside,
+  #header.sticky aside,
+  #header.stuck aside,
+  .nav-collapse.sticky aside,
+  .nav-collapse.stuck aside,
+  .nav-collapse.is-sticky aside {
+    position: absolute !important;
+    right: 76px !important;
+    top: 50% !important;
+    bottom: auto !important;
+    transform: translateY(-50%) !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 50 !important;
+  }
+
+  /* Соц-иконки в шапке скрываем */
+  #header aside .social-icons {
+    display: none !important;
+  }
+
+  .lang-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none;
+
+    line-height: 1 !important;
+  }
+
+  .lang-links li {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .lang-links a.lang-link {
+    line-height: 1 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+
+    /* ✅ одинаково и вверху и при sticky */
+    color: rgba(0,0,0,0.72) !important;
+    text-decoration: none !important;
+  }
+
+  /* Активный язык — подчёркивание (и при sticky тоже) */
+  .lang-links a.lang-link.is-active {
+    color: rgba(0,0,0,0.95) !important;
+    text-decoration: underline !important;
+    text-underline-offset: 4px !important;
+  }
+}
+
+/* ==========================================================
+   B) Sticky header — строго к верху окна
+   ========================================================== */
+
+#header,
+#header.nav-collapse,
+#header.sticky,
+#header.stuck,
+#header.is-sticky {
+  top: 0 !important;
+  margin-top: 0 !important;
+}
+
+.is-sticky #header,
+.sticky #header,
+.stuck #header,
+.fixed #header,
+#header.fixed,
+#header.sticky,
+#header.stuck,
+#header.is-sticky,
+.nav-collapse.stuck,
+.nav-collapse.sticky,
+.nav-collapse.is-sticky {
+  top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* ==========================================================
+   C) Floating buttons — Top сверху, Miranda снизу
+   ========================================================== */
+
+:root{
+  --miranda-bottom: 24px;
+  --miranda-btn-size: 56px;
+  --float-gap: 18px;
+}
+
+#ai-agent {
+  bottom: calc(var(--miranda-bottom) + var(--lift-offset, 0px)) !important;
+  z-index: 9998 !important;
+}
+
+#scrollUp {
+  bottom: calc(var(--miranda-bottom) + var(--miranda-btn-size) + var(--float-gap) + var(--lift-offset, 0px)) !important;
+  z-index: 9999 !important;
+}
+
+#ai-agent-window {
+  bottom: calc(var(--miranda-bottom) + var(--lift-offset, 0px)) !important;
+  z-index: 9997 !important;
+}
+
+/* ==========================================================
+   D) PRICING — 3 блока по умолчанию; карусель активируется если >3
+   ========================================================== */
+
+.carousel.pricing-carousel .carousel-item {
+  flex: 0 0 33.3333%;
+  max-width: 33.3333%;
+}
+
+@media (max-width: 980px) {
+  .carousel.pricing-carousel .carousel-item { flex: 0 0 50%; max-width: 50%; }
+}
+@media (max-width: 640px) {
+  .carousel.pricing-carousel .carousel-item { flex: 0 0 100%; max-width: 100%; }
+}
+
+.carousel.pricing-carousel .carousel-item::after { display: none !important; }
+.carousel.pricing-carousel::before,
+.carousel.pricing-carousel::after { display: none !important; }
+
+.carousel.is-disabled .carousel-nav { display: none !important; }
+.carousel.is-disabled .carousel-track {
+  overflow: hidden !important;
+  scroll-snap-type: none !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+@media (min-width: 980px) {
+  #pricing .pricing-block-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 560px;
+  }
+  #pricing .pricing-block-content ul { flex: 1 1 auto; }
+  #pricing .pricing-block-content .button { margin-top: auto; }
+}
+
+/* ==========================================================
+   E) CAROUSELS — базовая механика
+   ========================================================== */
+
 .carousel {
   position: relative;
   width: 100%;
 }
 
-/* Лента карусели:
-   ✅ overflow-x:auto = можно свайпать пальцем (мобильные)
-   ✅ display:flex + nowrap = элементы в одну линию
-*/
 .carousel-track {
   display: flex;
   flex-wrap: nowrap;
@@ -41,72 +319,48 @@
 
   scroll-behavior: smooth;
 
-  /* ✅ Улучшаю “ощущение” карусели: элементы прилипают к сетке */
   scroll-snap-type: x mandatory;
   scroll-padding-left: 44px;
   scroll-padding-right: 44px;
 
-  /* ✅ Визуальная подсказка: можно “хватать” и тянуть мышью */
   cursor: grab;
   user-select: none;
 
-  /* ✅ IE/старые Edge: прячу скроллбар */
   -ms-overflow-style: none;
 
-  /* Небольшой внутренний отступ, чтобы стрелки не перекрывали контент визуально */
   padding: 8px 44px 16px;
-
-  /* Прячем скроллбар (остается управление: тач/колесо/стрелки) */
-  scrollbar-width: none;         /* Firefox */
+  scrollbar-width: none;
 }
-.carousel-track::-webkit-scrollbar { height: 0; } /* WebKit */
 
-/* Карточка:
-   ✅ на десктопе ровно 3 в видимой области
-   Важно: вместо gap использую padding, чтобы точно не “съедать” ширину.
-*/
+.carousel-track::-webkit-scrollbar { display: none; }
+.carousel-track.is-dragging { cursor: grabbing; }
+
 .carousel-item {
-  flex: 0 0 33.3333%;
-  max-width: 33.3333%;
   box-sizing: border-box;
-
-  padding: 0 10px;  /* визуальный “gap” */
+  padding: 0 10px;
   position: relative;
-  overflow: hidden; /* чтобы маска не выходила за край */
+  overflow: hidden;
 
-  /* ВАЖНО: сбрасываю возможные сеточные float/width из шаблона */
   float: none !important;
   margin: 0 !important;
   width: auto !important;
 
   display: block;
-
-  /* ✅ Для scroll-snap: каждый элемент прилипает к началу */
   scroll-snap-align: start;
 }
 
-/* Картинка внутри карточки */
-.carousel-item img {
-  display: block;
-  width: 100%;
-  height: auto;
+.carousel:not(.pricing-carousel) .carousel-item {
+  flex: 0 0 33.3333%;
+  max-width: 33.3333%;
 }
 
-/* Адаптив:
-   - планшет: 2 карточки
-   - телефон: 1 карточка (удобнее свайп)
-*/
 @media (max-width: 980px) {
-  .carousel-item { flex-basis: 50%; max-width: 50%; }
+  .carousel:not(.pricing-carousel) .carousel-item { flex-basis: 50%; max-width: 50%; }
 }
 @media (max-width: 640px) {
-  .carousel-item { flex-basis: 88%; max-width: 88%; }
-  .carousel-track { padding-left: 44px; padding-right: 44px; }
+  .carousel:not(.pricing-carousel) .carousel-item { flex-basis: 100%; max-width: 100%; }
 }
 
-/* -----------------------------
-   Стрелки карусели
-   ----------------------------- */
 .carousel-nav {
   position: absolute;
   top: 50%;
@@ -125,32 +379,21 @@
   line-height: 34px;
   font-size: 22px;
   text-align: center;
-
-  transition: opacity 160ms ease, background 160ms ease;
 }
 
-.carousel-nav:hover {
-  background: rgba(255,255,255,0.95);
-}
-
+.carousel-nav:hover { background: rgba(255,255,255,0.98); }
 .carousel-nav.prev { left: 8px; }
 .carousel-nav.next { right: 8px; }
 
-/* -----------------------------
-   2) PNG mask overlay
-   -----------------------------
-   Важно:
-   - Маска вешается на .carousel-item (то есть только на превью)
-   - В lightbox (Featherlight) маски нет, потому что там другой DOM.
-*/
-.carousel-item::after {
+/* ==========================================================
+   F) MASK — Projects и certs; Education без маски
+   ========================================================== */
+
+#projects .carousel-item::after {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 2;
-  pointer-events: none; /* клики уходят в <a> */
 
-  /* ✅ твой новый путь */
   background-image: url("../images/mask.png");
   background-size: cover;
   background-position: center;
@@ -158,34 +401,112 @@
 
   opacity: 0.6;
   transition: opacity 220ms ease;
+
+  pointer-events: none;
 }
 
-/* При наведении маска исчезает */
-.carousel-item:hover::after {
+#projects .carousel-item:hover::after { opacity: 0; }
+
+/* Education: маску выключаем полностью */
+#education .carousel-item::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* certs: маска включена (только для data-carousel="certs") */
+.carousel[data-carousel="certs"] .carousel-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image: url("../images/mask.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  opacity: 0.6;
+  transition: opacity 220ms ease;
+
+  pointer-events: none;
+  display: block;
+}
+
+.carousel[data-carousel="certs"] .carousel-item:hover::after {
   opacity: 0;
 }
 
-/* Когда пользователь тянет ленту мышью — меняю курсор на “grabbing” */
-.carousel-track.is-dragging { cursor: grabbing; }
+/* ==========================================================
+   G) Education — ширина/поля/отступы
+   ========================================================== */
 
-/* Лёгкие “градиентные” края — визуально подсказывают, что контент листается */
-.carousel::before,
-.carousel::after {
+#education {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+#education .carousel-track {
+  padding-left: 32px !important;
+  padding-right: 32px !important;
+  gap: 24px;
+}
+
+@media (min-width: 981px) {
+  #education .carousel-item {
+    flex: 0 0 30%;
+    max-width: 30%;
+    padding: 0;
+  }
+}
+
+#education .carousel-item {
+  overflow: hidden;
+  background: #ffffff !important;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  padding: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+#education .carousel-item:hover {
+  border-color: rgba(0,0,0,0.25);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.14);
+}
+
+#education .carousel-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+/* ==========================================================
+   H) Remove gradient rectangles for Education
+   ========================================================== */
+
+#education .carousel::before,
+#education .carousel::after {
+  display: none !important;
+}
+
+/* Градиенты только для Projects */
+#projects .carousel::before,
+#projects .carousel::after {
   content: "";
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 44px; /* совпадает с padding у трека */
+  width: 44px;
   pointer-events: none;
-  z-index: 9; /* ниже кнопок (10), но выше картинок */
+  z-index: 9;
 }
 
-.carousel::before {
+#projects .carousel::before {
   left: 0;
   background: linear-gradient(to right, rgba(255,255,255,0.95), rgba(255,255,255,0));
 }
 
-.carousel::after {
+#projects .carousel::after {
   right: 0;
   background: linear-gradient(to left, rgba(255,255,255,0.95), rgba(255,255,255,0));
 }
