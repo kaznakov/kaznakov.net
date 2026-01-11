@@ -39,7 +39,7 @@
 
       "education.kicker": "YOUR CHOICE",
       "education.title": "We have the right package for you",
-      "education.buy": "BUY TODAY",
+      "education.buy": "COMMING SOON",
 
       "education.course1.name": "What is AI",
       "education.course1.sub": "Course",
@@ -67,8 +67,8 @@
       "agent.title": "Miranda",
       "agent.placeholder": "Type your message...",
 
-      "agent.greet1": "Hi! I'm Miranda. How can I help?",
-      "agent.greet2": "Try commands: /mode critic or /mode optimizer. Language: /lang en or /lang ru.",
+      "agent.greet1": "Hi! I'm Miranda. I'm a virtual assistant of Alexey Kaznakov. You can ask me about him or projects and products we develop.",
+      "agent.greet2": "Try my modes by entering commands: /assistant or /saler.",
       "agent.greet3": "Current backend: "
     },
 
@@ -112,38 +112,31 @@
       "education.course1.name": "Что такое ИИ",
       "education.course1.sub": "Курс",
       "education.course1.desc": "Простыми словами про Искуственный Интеллект",
-      "education.course1.li1": "5 загрузок",
-      "education.course1.li2": "2 расширения",
-      "education.course1.li3": "Материалы",
-      "education.course1.li4": "Поддержка на форуме",
-      "education.course1.li5": "1 год обновлений",
+      "education.course1.li1": "Материалы",
+      "education.course1.li2": "Видео",
+      "education.course1.li3": "Тесты"
 
-      "education.course2.name": "Студент",
-      "education.course2.sub": "Самый популярный",
-      "education.course2.desc": "Описание тарифа — заменим на реальный текст",
-      "education.course2.li1": "15 загрузок",
-      "education.course2.li2": "5 расширений",
-      "education.course2.li3": "Материалы с файлами",
-      "education.course2.li4": "Поддержка на форуме",
-      "education.course2.li5": "2 года обновлений",
+      "education.course2.name": "Что такое промпт инжиниринг",
+      "education.course2.sub": "Курс",
+      "education.course2.desc": "Простыми словами о промпт инжиниринге",
+      "education.course2.li1": "Материалы",
+      "education.course2.li2": "Видео",
+      "education.course2.li3": "Тесты"
 
-      "education.course3.name": "Бизнес",
-      "education.course3.sub": "Для команды",
-      "education.course3.desc": "Описание тарифа — заменим на реальный текст",
-      "education.course3.li1": "Безлимит загрузок",
-      "education.course3.li2": "Безлимит расширений",
-      "education.course3.li3": "Безлимит расширений",
-      "education.course3.li4": "HD видеоуроки",
-      "education.course3.li5": "Чат-поддержка",
-      "education.course3.li6": "Пожизненные обновления",
+      "education.course3.name": "ИИ для бизнеса",
+      "education.course3.sub": "Лекция",
+      "education.course3.desc": "Как ИИ поможет вашему бизнесу",
+      "education.course3.li1": "Онлайн",
+      "education.course3.li2": "Офлайн",
+      "education.course3.li3": "Интерактив"
 
       "footer.madeby": 'Сделано с любовью — <a href="https://www.shapingrain.com">ShapingRain</a>',
 
       "agent.title": "Миранда",
       "agent.placeholder": "Введите сообщение...",
 
-      "agent.greet1": "Привет! Я Миранда. Чем могу помочь?",
-      "agent.greet2": "Команды: /mode critic или /mode optimizer. Язык: /lang en или /lang ru.",
+      "agent.greet1": "Привет! Я Миранда. Виртуальный ассиситен Алексея Казнакова. Вы можете спроситьменя об авторе, проектах и продуктах, которые мы разрабатываем",
+      "agent.greet2": "Попробуйте мои режимы: /assistant или /saler.",
       "agent.greet3": "Текущий backend: "
     }
   };
