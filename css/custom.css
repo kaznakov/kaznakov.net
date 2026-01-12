@@ -653,28 +653,30 @@
 }
 
 /* ==========================================================
-   HEADER HEIGHT CONSISTENCY
+   HEADER HEIGHT CONSISTENCY (DESKTOP)
    ========================================================== */
 
-#header,
-#header.nav-solid {
-  height: 71px !important;
-}
+@media (min-width: 980px) {
+  #header,
+  #header.nav-solid {
+    height: 71px !important;
+  }
 
-#header .row,
-#header .row [class*='col-'] {
-  height: 71px;
-}
+  #header .row,
+  #header .row [class*='col-'] {
+    height: 71px;
+  }
 
-#header .row [class*='col-'] {
-  display: flex;
-  align-items: center;
-}
+  #header .row [class*='col-'] {
+    display: flex;
+    align-items: center;
+  }
 
-#header nav a,
-#header #logo,
-#header.nav-solid nav a,
-#header.nav-solid #logo {
-  height: 71px;
-  line-height: 71px;
+  #header nav a,
+  #header #logo,
+  #header.nav-solid nav a,
+  #header.nav-solid #logo {
+    height: 71px;
+    line-height: 71px;
+  }
 }
