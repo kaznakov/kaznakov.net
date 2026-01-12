@@ -626,11 +626,11 @@
 
 @media (max-width: 979px) {
   .project-modal {
-    padding-top: 72px;
+    padding-top: 96px;
   }
 
   .project-modal__overlay {
-    top: 72px;
+    top: 0;
   }
 
   .project-modal__dialog {
