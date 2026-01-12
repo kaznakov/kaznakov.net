@@ -207,6 +207,19 @@
     text-decoration: underline !important;
     text-underline-offset: 4px !important;
   }
+
+  #nav-trigger {
+    height: 71px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  #nav-trigger span {
+    height: 38px;
+    display: flex;
+    align-items: center;
+  }
 }
 
 /* ==========================================================
@@ -665,12 +678,7 @@
 
 #header .row,
 #header .row [class*='col-'] {
-  height: 71px;
-}
-
-#header .row [class*='col-'] {
-  display: flex;
-  align-items: center;
+  min-height: 71px;
 }
 
 #header nav a,
