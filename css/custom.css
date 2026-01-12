@@ -132,7 +132,7 @@
     height: 71px;
     display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 6px;
   }
 
   /* Базовое положение RU/EN (вверху страницы) */
@@ -186,8 +186,22 @@
     height: 71px !important;
     display: inline-flex !important;
     align-items: center !important;
-    gap: 12px !important;
+    gap: 6px !important;
     z-index: 50 !important;
+  }
+
+  #nav-mobile {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 71px;
+    z-index: 40;
+  }
+
+  #nav-mobile ul {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
   }
 
   /* Соц-иконки в шапке скрываем */
