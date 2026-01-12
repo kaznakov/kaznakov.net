@@ -125,18 +125,19 @@
     height: 71px;
   }
 
-  #nav-trigger {
+  .header-actions {
     position: absolute;
     right: 20px;
     top: 0;
     height: 71px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
   }
 
   /* Базовое положение RU/EN (вверху страницы) */
   #header aside {
-    position: absolute;
-    right: calc(20px + 38px + 12px);       /* место под кнопку меню справа */
-    top: 0;
+    position: static;
     transform: none;
     height: 71px;
 
@@ -157,9 +158,9 @@
   .nav-collapse.sticky aside,
   .nav-collapse.stuck aside,
   .nav-collapse.is-sticky aside {
-    position: absolute !important;
-    right: calc(20px + 38px + 12px) !important;
-    top: 0 !important;
+    position: static !important;
+    right: auto !important;
+    top: auto !important;
     bottom: auto !important;
     transform: none !important;
     height: 71px !important;
@@ -170,6 +171,22 @@
 
     margin: 0 !important;
     padding: 0 !important;
+    z-index: 50 !important;
+  }
+
+  .is-sticky #header .header-actions,
+  #header.sticky .header-actions,
+  #header.stuck .header-actions,
+  .nav-collapse.sticky .header-actions,
+  .nav-collapse.stuck .header-actions,
+  .nav-collapse.is-sticky .header-actions {
+    position: absolute !important;
+    right: 20px !important;
+    top: 0 !important;
+    height: 71px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 12px !important;
     z-index: 50 !important;
   }
 
