@@ -212,19 +212,18 @@ $(document).ready(function () {
 		}
 	});
 
-	$("#projects .carousel-track .carousel-item").each(function (index) {
-		$(this).on("click", function (event) {
-			event.preventDefault();
-			event.stopImmediatePropagation();
-			const data = projectModalData[index];
-			if (!data) {
-				return;
-			}
-			activeProjectIndex = index;
-			fillProjectModal(projectModal, data);
-			refreshProjectModalLanguage();
-			openProjectModal(projectModal);
-		});
+	$("#projects .carousel-track .carousel-item").on("click", function (event) {
+		event.preventDefault();
+		event.stopImmediatePropagation();
+		const index = Number($(this).attr("data-project-index"));
+		const data = projectModalData[index];
+		if (!data) {
+			return;
+		}
+		activeProjectIndex = index;
+		fillProjectModal(projectModal, data);
+		refreshProjectModalLanguage();
+		openProjectModal(projectModal);
 	});
 
 });
