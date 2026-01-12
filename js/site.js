@@ -84,7 +84,7 @@ $(document).ready(function () {
 				{ labelKey: "projects.modal.project4.link", url: "https://kaznakov.net" }
 			],
 			screenshots: [
-				"images/projects_images/project_image_001.jpg"
+				"images/projects_images/project_image_004.jpg"
 			]
 		},
 		{
@@ -94,7 +94,7 @@ $(document).ready(function () {
 				{ labelKey: "projects.modal.project5.link", url: "https://kaznakov.net" }
 			],
 			screenshots: [
-				"images/projects_images/project_image_002.jpg"
+				"images/projects_images/project_image_005.jpg"
 			]
 		},
 		{
@@ -104,7 +104,7 @@ $(document).ready(function () {
 				{ labelKey: "projects.modal.project6.link", url: "https://kaznakov.net" }
 			],
 			screenshots: [
-				"images/projects_images/project_image_003.jpg"
+				"images/projects_images/project_image_006.jpg"
 			]
 		}
 	];
