@@ -84,7 +84,7 @@ $(document).ready(function () {
 				{ labelKey: "projects.modal.project4.link", url: "https://kaznakov.net" }
 			],
 			screenshots: [
-				"images/projects_images/project_image_004.jpg"
+				"images/projects_images/project_image_001.jpg"
 			]
 		},
 		{
@@ -94,7 +94,7 @@ $(document).ready(function () {
 				{ labelKey: "projects.modal.project5.link", url: "https://kaznakov.net" }
 			],
 			screenshots: [
-				"images/projects_images/project_image_005.jpg"
+				"images/projects_images/project_image_002.jpg"
 			]
 		},
 		{
@@ -104,7 +104,7 @@ $(document).ready(function () {
 				{ labelKey: "projects.modal.project6.link", url: "https://kaznakov.net" }
 			],
 			screenshots: [
-				"images/projects_images/project_image_006.jpg"
+				"images/projects_images/project_image_003.jpg"
 			]
 		}
 	];
@@ -212,10 +212,15 @@ $(document).ready(function () {
 		}
 	});
 
-	$("#projects .carousel-track .carousel-item").on("click", function (event) {
+	const projectItems = $("#projects .carousel-track .carousel-item");
+
+	projectItems.on("click", function (event) {
 		event.preventDefault();
 		event.stopImmediatePropagation();
-		const index = Number($(this).attr("data-project-index"));
+		let index = Number($(this).attr("data-project-index"));
+		if (Number.isNaN(index)) {
+			index = projectItems.index(this);
+		}
 		const data = projectModalData[index];
 		if (!data) {
 			return;
