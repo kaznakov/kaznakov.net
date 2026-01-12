@@ -661,6 +661,16 @@
   height: 71px !important;
 }
 
+#header .row,
+#header .row [class*='col-'] {
+  height: 71px;
+}
+
+#header .row [class*='col-'] {
+  display: flex;
+  align-items: center;
+}
+
 #header nav a,
 #header #logo,
 #header.nav-solid nav a,
