@@ -212,44 +212,10 @@ $(document).ready(function () {
 		}
 	});
 
-	function ensureProjectCarouselItems() {
-		const track = document.querySelector("#projects .carousel-track");
-		if (!track) {
-			return;
-		}
-		const currentItems = track.querySelectorAll(".carousel-item");
-		const missingCount = projectModalData.length - currentItems.length;
-		if (missingCount <= 0) {
-			return;
-		}
-		for (let i = 0; i < missingCount; i += 1) {
-			const dataIndex = currentItems.length + i;
-			const data = projectModalData[dataIndex];
-			if (!data) {
-				continue;
-			}
-			const anchor = document.createElement("a");
-			anchor.className = "carousel-item wow fadeIn";
-			anchor.setAttribute("data-wow-delay", "0.1s");
-			anchor.href = data.screenshots[0] || "#";
-			anchor.setAttribute("data-featherlight", "image");
-			const image = document.createElement("img");
-			image.src = data.screenshots[0] || "";
-			image.alt = translateModalText(data.titleKey);
-			anchor.appendChild(image);
-			track.appendChild(anchor);
-		}
-	}
-
-	function bindProjectModalTriggers() {
-		$("#projects .carousel-track .carousel-item").each(function (index) {
-			$(this).attr("data-project-index", index);
-		});
-
-		$("#projects .carousel-track .carousel-item").on("click", function (event) {
+	$("#projects .carousel-track .carousel-item").each(function (index) {
+		$(this).on("click", function (event) {
 			event.preventDefault();
 			event.stopImmediatePropagation();
-			const index = Number($(this).attr("data-project-index"));
 			const data = projectModalData[index];
 			if (!data) {
 				return;
@@ -259,10 +225,7 @@ $(document).ready(function () {
 			refreshProjectModalLanguage();
 			openProjectModal(projectModal);
 		});
-	}
-
-	ensureProjectCarouselItems();
-	bindProjectModalTriggers();
+	});
 
 });
 
