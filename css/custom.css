@@ -651,3 +651,18 @@
     margin-top: 0;
   }
 }
+
+/* ==========================================================
+   HEADER HEIGHT CONSISTENCY
+   ========================================================== */
+
+#header,
+#header.nav-solid {
+  height: 71px !important;
+}
+
+#header.nav-solid nav a,
+#header.nav-solid #logo {
+  height: 71px;
+  line-height: 71px;
+}
