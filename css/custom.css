@@ -19,12 +19,14 @@
   #logo {
     flex: 0 0 auto;
     margin-right: 24px;
+    order: 1;
   }
 
   #nav-main {
     flex: 1 1 auto;
     display: flex;
     justify-content: center;
+    order: 2;
   }
 
   #nav-main ul {
@@ -56,6 +58,14 @@
     z-index: 20;
   }
 
+  .header-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+    order: 3;
+  }
+
   .lang-links {
     list-style: none;
     margin: 0;
@@ -63,7 +73,7 @@
 
     display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
   }
 
   .lang-links a.lang-link {
@@ -132,7 +142,7 @@
     height: 71px;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 12px;
   }
 
   /* Базовое положение RU/EN (вверху страницы) */
@@ -186,22 +196,8 @@
     height: 71px !important;
     display: inline-flex !important;
     align-items: center !important;
-    gap: 6px !important;
+    gap: 12px !important;
     z-index: 50 !important;
-  }
-
-  #nav-mobile {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 71px;
-    z-index: 40;
-  }
-
-  #nav-mobile ul {
-    margin-left: 0;
-    margin-right: 0;
-    width: 100%;
   }
 
   /* Соц-иконки в шапке скрываем */
@@ -212,8 +208,8 @@
   .lang-links {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
-    width: 54px;
+    gap: 6px;
+    width: 44px;
     justify-content: space-between;
 
     margin: 0 !important;
