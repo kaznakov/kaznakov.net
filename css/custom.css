@@ -661,6 +661,8 @@
   height: 71px !important;
 }
 
+#header nav a,
+#header #logo,
 #header.nav-solid nav a,
 #header.nav-solid #logo {
   height: 71px;
