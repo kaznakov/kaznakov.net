@@ -630,7 +630,7 @@
   }
 
   .project-modal__overlay {
-    top: 0;
+    top: 71px;
   }
 
   .project-modal__dialog {
@@ -644,7 +644,7 @@
   }
 
   .project-modal__overlay {
-    top: 88px;
+    top: 71px;
   }
 
   .project-modal__dialog {
