@@ -124,8 +124,9 @@
   #header aside {
     position: absolute;
     right: 76px;       /* место под кнопку меню справа */
-    top: 50%;
-    transform: translateY(-50%);
+    top: 0;
+    transform: none;
+    height: 71px;
 
     display: inline-flex;
     align-items: center;
@@ -146,9 +147,10 @@
   .nav-collapse.is-sticky aside {
     position: absolute !important;
     right: 76px !important;
-    top: 50% !important;
+    top: 0 !important;
     bottom: auto !important;
-    transform: translateY(-50%) !important;
+    transform: none !important;
+    height: 71px !important;
 
     display: inline-flex !important;
     align-items: center !important;
@@ -653,30 +655,28 @@
 }
 
 /* ==========================================================
-   HEADER HEIGHT CONSISTENCY (DESKTOP)
+   HEADER HEIGHT CONSISTENCY
    ========================================================== */
 
-@media (min-width: 980px) {
-  #header,
-  #header.nav-solid {
-    height: 71px !important;
-  }
+#header,
+#header.nav-solid {
+  height: 71px !important;
+}
 
-  #header .row,
-  #header .row [class*='col-'] {
-    height: 71px;
-  }
+#header .row,
+#header .row [class*='col-'] {
+  height: 71px;
+}
 
-  #header .row [class*='col-'] {
-    display: flex;
-    align-items: center;
-  }
+#header .row [class*='col-'] {
+  display: flex;
+  align-items: center;
+}
 
-  #header nav a,
-  #header #logo,
-  #header.nav-solid nav a,
-  #header.nav-solid #logo {
-    height: 71px;
-    line-height: 71px;
-  }
+#header nav a,
+#header #logo,
+#header.nav-solid nav a,
+#header.nav-solid #logo {
+  height: 71px;
+  line-height: 71px;
 }
