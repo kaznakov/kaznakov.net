@@ -238,6 +238,19 @@
     text-decoration: underline !important;
     text-underline-offset: 4px !important;
   }
+
+  #nav-trigger {
+    height: 71px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  #nav-trigger span {
+    height: 38px;
+    display: flex;
+    align-items: center;
+  }
 }
 
 /* ==========================================================
