@@ -637,3 +637,17 @@
     margin-top: 0;
   }
 }
+
+@media (min-width: 980px) {
+  .project-modal {
+    padding-top: 88px;
+  }
+
+  .project-modal__overlay {
+    top: 88px;
+  }
+
+  .project-modal__dialog {
+    margin-top: 0;
+  }
+}
