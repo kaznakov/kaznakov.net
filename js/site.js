@@ -104,7 +104,7 @@ $(document).ready(function () {
 				{ labelKey: "projects.modal.project6.link", url: "#" }
 			],
 			screenshots: [
-				"images/projects_images/project_image_005.jpg"
+				"images/projects_images/project_image_006.jpg"
 			]
 		}
 	];

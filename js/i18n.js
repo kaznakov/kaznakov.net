@@ -131,7 +131,7 @@
       "projects.modal.project2.description": "Персональный чат-бот v1.0.0-beta. Общается в роли персонального ассистента или продажника.",
       "projects.modal.project2.link": "Общаться с Мирандой",
       "projects.modal.project3.title": "ScanYOmail",
-      "projects.modal.project3.description": "Прилодения для организации бумажной почты v1.0.0-beta. Сканируй, сортируй, экспортируй бумажныую почту в календарь. Больше никаких пропущенных платежей.",
+      "projects.modal.project3.description": "Прилодения для организации бумажной почты v1.0.0-alpha. Сканируй, сортируй, экспортируй бумажныую почту в календарь. Больше никаких пропущенных платежей.",
       "projects.modal.project3.link": "В разработке",
       "projects.modal.project4.title": "AI Catalog",
       "projects.modal.project4.description": "Каталог AI-инструментов v.1.0.0-alpha с фильтрами, рейтингами и реальными сценариями.",
