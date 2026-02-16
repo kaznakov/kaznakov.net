@@ -14,16 +14,6 @@ $(document).ready(function () {
 	/*Responsive Navigation*/
 	function syncMobileMenu() {
 		$("#nav-mobile").html($("#nav-main").html());
-
-		const navList = $("#nav-mobile ul").first();
-		if (!navList.length) {
-			return;
-		}
-
-		navList.append(
-			'<li class="nav-mobile-lang-item"><a href="#" class="lang-link" data-lang="en">EN</a></li>' +
-			'<li class="nav-mobile-lang-item"><a href="#" class="lang-link" data-lang="ru">RU</a></li>'
-		);
 	}
 
 	syncMobileMenu();

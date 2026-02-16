@@ -67,7 +67,7 @@
     order: 3;
   }
 
-  .lang-links {
+  #header aside .lang-links {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -77,7 +77,7 @@
     gap: 8px;
   }
 
-  .lang-links a.lang-link {
+  #header aside .lang-links a.lang-link {
     text-decoration: none;
     text-transform: uppercase;
     font-size: 13px;
@@ -92,9 +92,9 @@
     transition: opacity 160ms ease;
   }
 
-  .lang-links a.lang-link:hover { opacity: 0.85; }
+  #header aside .lang-links a.lang-link:hover { opacity: 0.85; }
 
-  .lang-links a.lang-link.is-active {
+  #header aside .lang-links a.lang-link.is-active {
     color: rgba(0,0,0,0.95);
     text-decoration: underline;
     text-underline-offset: 4px;
@@ -206,7 +206,7 @@
     display: none !important;
   }
 
-  .lang-links {
+  #header aside .lang-links {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -220,7 +220,7 @@
     line-height: 1 !important;
   }
 
-  .lang-links li {
+  #header aside .lang-links li {
     margin: 0 !important;
     padding: 0 !important;
     line-height: 1 !important;
@@ -229,7 +229,7 @@
     align-items: center;
   }
 
-  .lang-links a.lang-link {
+  #header aside .lang-links a.lang-link {
     line-height: 1 !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
@@ -244,7 +244,7 @@
   }
 
   /* Активный язык — подчёркивание (и при sticky тоже) */
-  .lang-links a.lang-link.is-active {
+  #header aside .lang-links a.lang-link.is-active {
     color: rgba(0,0,0,0.95) !important;
     text-decoration: underline !important;
     text-underline-offset: 4px !important;
