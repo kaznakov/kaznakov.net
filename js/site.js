@@ -12,7 +12,13 @@ $(document).ready(function () {
 	}
 
 	/*Responsive Navigation*/
-	$("#nav-mobile").html($("#nav-main").html());
+	function syncMobileMenu() {
+		$("#nav-mobile").html($("#nav-main").html());
+		$("#nav-mobile .lang-link").closest("li").remove();
+		$("#nav-mobile a[data-lang]").closest("li").remove();
+	}
+
+	syncMobileMenu();
 	$("#nav-trigger span").on("click",function() {
 		if ($("nav#nav-mobile ul").hasClass("expanded")) {
 			$("nav#nav-mobile ul.expanded").removeClass("expanded").slideUp(250);
@@ -23,7 +29,7 @@ $(document).ready(function () {
 		}
 	});
 
-	$("#nav-mobile").html($("#nav-main").html());
+	syncMobileMenu();
 	$("#nav-mobile ul a").on("click",function() {
 		if ($("nav#nav-mobile ul").hasClass("expanded")) {
 			$("nav#nav-mobile ul.expanded").removeClass("expanded").slideUp(250);
