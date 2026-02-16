@@ -45,9 +45,7 @@
   }
 
   #nav-main .nav-lang-group {
-    display: inline-flex;
-    align-items: center;
-    gap: 0;
+    display: none;
   }
 
   #nav-main .nav-lang-group a.lang-link {
@@ -143,6 +141,24 @@
     display: inline-flex;
     align-items: center;
     line-height: 1;
+  }
+
+  #header aside .social-icons .lang-social a.lang-link {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: rgba(0,0,0,0.72);
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  #header aside .social-icons .lang-social a.lang-link.is-active {
+    color: rgba(0,0,0,0.95);
+    text-decoration: underline;
+    text-underline-offset: 4px;
   }
 }
 
