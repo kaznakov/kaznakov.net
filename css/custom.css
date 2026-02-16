@@ -47,7 +47,7 @@
   #nav-main .nav-lang-group {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 0;
   }
 
   #nav-main .nav-lang-group a.lang-link {
@@ -63,7 +63,9 @@
   }
 
   #nav-main .nav-lang-group .nav-lang-sep {
-    opacity: 0.6;
+    opacity: 1;
+    white-space: pre;
+    width: auto;
   }
 
   #header aside {
@@ -292,7 +294,7 @@
   #nav-mobile .nav-lang-group {
     display: flex !important;
     align-items: center;
-    gap: 8px;
+    gap: 0;
     border-bottom: 1px solid #e1e1e1;
     padding: 14px 0;
   }
@@ -308,7 +310,8 @@
 
   #nav-mobile .nav-lang-group .nav-lang-sep {
     display: inline-block;
-    width: 6px;
+    white-space: pre;
+    width: auto;
   }
 }
 
