@@ -168,6 +168,23 @@
     gap: 12px;
   }
 
+  #nav-mobile {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 71px;
+    width: 100%;
+    z-index: 60;
+  }
+
+  #nav-mobile ul {
+    left: 0 !important;
+    right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+  }
+
   /* Базовое положение RU/EN (вверху страницы) */
   #header aside {
     position: static;
