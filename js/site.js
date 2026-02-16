@@ -14,8 +14,16 @@ $(document).ready(function () {
 	/*Responsive Navigation*/
 	function syncMobileMenu() {
 		$("#nav-mobile").html($("#nav-main").html());
-		$("#nav-mobile .lang-link").closest("li").remove();
-		$("#nav-mobile a[data-lang]").closest("li").remove();
+
+		const navList = $("#nav-mobile ul").first();
+		if (!navList.length) {
+			return;
+		}
+
+		navList.append(
+			'<li class="nav-mobile-lang-item"><a href="#" class="lang-link" data-lang="en">EN</a></li>' +
+			'<li class="nav-mobile-lang-item"><a href="#" class="lang-link" data-lang="ru">RU</a></li>'
+		);
 	}
 
 	syncMobileMenu();
@@ -30,6 +38,15 @@ $(document).ready(function () {
 	});
 
 	syncMobileMenu();
+
+	$("#nav-mobile").on("click", "a.lang-link[data-lang]", function (event) {
+		event.preventDefault();
+		const lang = $(this).attr("data-lang");
+		if (window.i18n && typeof window.i18n.setLang === "function") {
+			window.i18n.setLang(lang);
+		}
+	});
+
 	$("#nav-mobile ul a").on("click",function() {
 		if ($("nav#nav-mobile ul").hasClass("expanded")) {
 			$("nav#nav-mobile ul.expanded").removeClass("expanded").slideUp(250);
