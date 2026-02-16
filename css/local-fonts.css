@@ -1,0 +1,17 @@
+/* Local font fallback to avoid blocked external providers */
+@font-face {
+  font-family: 'Open Sans Local';
+  src: local('Open Sans'), local('OpenSans'), local('DejaVu Sans');
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+}
+
+html,
+body,
+input,
+textarea,
+select,
+button {
+  font-family: 'Open Sans Local', 'Open Sans', 'DejaVu Sans', Arial, sans-serif;
+}
