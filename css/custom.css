@@ -3,6 +3,7 @@
    Custom overrides for Namari
    ========================================================== */
 
+
 /* ==========================================================
    A) HEADER — язык/контакты справа на десктопе
    ========================================================== */
@@ -19,12 +20,14 @@
   #logo {
     flex: 0 0 auto;
     margin-right: 24px;
+    order: 1;
   }
 
   #nav-main {
     flex: 1 1 auto;
     display: flex;
     justify-content: center;
+    order: 2;
   }
 
   #nav-main ul {
@@ -39,6 +42,28 @@
     line-height: 1;
     display: inline-flex;
     align-items: center;
+  }
+
+  #nav-main .nav-lang-group {
+    display: none;
+  }
+
+  #nav-main .nav-lang-group a.lang-link {
+    display: inline-flex;
+    align-items: center;
+    height: auto;
+    line-height: 1;
+    padding: 0;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  #nav-main .nav-lang-group .nav-lang-sep {
+    opacity: 1;
+    white-space: pre;
+    width: auto;
   }
 
   #header aside {
@@ -56,17 +81,25 @@
     z-index: 20;
   }
 
-  .lang-links {
+  .header-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+    order: 3;
+  }
+
+  #header aside .lang-links {
     list-style: none;
     margin: 0;
     padding: 0;
 
     display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
   }
 
-  .lang-links a.lang-link {
+  #header aside .lang-links a.lang-link {
     text-decoration: none;
     text-transform: uppercase;
     font-size: 13px;
@@ -81,9 +114,9 @@
     transition: opacity 160ms ease;
   }
 
-  .lang-links a.lang-link:hover { opacity: 0.85; }
+  #header aside .lang-links a.lang-link:hover { opacity: 0.85; }
 
-  .lang-links a.lang-link.is-active {
+  #header aside .lang-links a.lang-link.is-active {
     color: rgba(0,0,0,0.95);
     text-decoration: underline;
     text-underline-offset: 4px;
@@ -109,6 +142,24 @@
     align-items: center;
     line-height: 1;
   }
+
+  #header aside .social-icons .lang-social a.lang-link {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: rgba(0,0,0,0.72);
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  #header aside .social-icons .lang-social a.lang-link.is-active {
+    color: rgba(0,0,0,0.95);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
 }
 
 /* ==========================================================
@@ -120,12 +171,43 @@
 
   #header { position: relative; }
 
+  #header .row .col-1 {
+    position: relative;
+    height: 71px;
+  }
+
+  .header-actions {
+    position: absolute;
+    right: 8px;
+    top: 0;
+    height: 71px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  #nav-mobile {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 71px;
+    width: 100%;
+    z-index: 60;
+  }
+
+  #nav-mobile ul {
+    left: 0 !important;
+    right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+  }
+
   /* Базовое положение RU/EN (вверху страницы) */
   #header aside {
-    position: absolute;
-    right: 76px;       /* место под кнопку меню справа */
-    top: 50%;
-    transform: translateY(-50%);
+    position: static;
+    transform: none;
+    height: 71px;
 
     display: inline-flex;
     align-items: center;
@@ -144,11 +226,12 @@
   .nav-collapse.sticky aside,
   .nav-collapse.stuck aside,
   .nav-collapse.is-sticky aside {
-    position: absolute !important;
-    right: 76px !important;
-    top: 50% !important;
+    position: static !important;
+    right: auto !important;
+    top: auto !important;
     bottom: auto !important;
-    transform: translateY(-50%) !important;
+    transform: none !important;
+    height: 71px !important;
 
     display: inline-flex !important;
     align-items: center !important;
@@ -159,15 +242,33 @@
     z-index: 50 !important;
   }
 
+  .is-sticky #header .header-actions,
+  #header.sticky .header-actions,
+  #header.stuck .header-actions,
+  .nav-collapse.sticky .header-actions,
+  .nav-collapse.stuck .header-actions,
+  .nav-collapse.is-sticky .header-actions {
+    position: absolute !important;
+    right: 8px !important;
+    top: 0 !important;
+    height: 71px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    z-index: 50 !important;
+  }
+
   /* Соц-иконки в шапке скрываем */
   #header aside .social-icons {
     display: none !important;
   }
 
-  .lang-links {
+  #header aside .lang-links {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 6px;
+    width: 44px;
+    justify-content: space-between;
 
     margin: 0 !important;
     padding: 0 !important;
@@ -176,7 +277,7 @@
     line-height: 1 !important;
   }
 
-  .lang-links li {
+  #header aside .lang-links li {
     margin: 0 !important;
     padding: 0 !important;
     line-height: 1 !important;
@@ -185,7 +286,7 @@
     align-items: center;
   }
 
-  .lang-links a.lang-link {
+  #header aside .lang-links a.lang-link {
     line-height: 1 !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
@@ -200,10 +301,33 @@
   }
 
   /* Активный язык — подчёркивание (и при sticky тоже) */
-  .lang-links a.lang-link.is-active {
+  #header aside .lang-links a.lang-link.is-active {
     color: rgba(0,0,0,0.95) !important;
     text-decoration: underline !important;
     text-underline-offset: 4px !important;
+  }
+
+  #nav-mobile .nav-lang-group {
+    display: flex !important;
+    align-items: center;
+    gap: 0;
+    border-bottom: 1px solid #e1e1e1;
+    padding: 14px 0;
+  }
+
+  #nav-mobile .nav-lang-group a.lang-link {
+    display: inline-flex !important;
+    height: auto !important;
+    line-height: 1 !important;
+    padding: 0 !important;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  #nav-mobile .nav-lang-group .nav-lang-sep {
+    display: inline-block;
+    white-space: pre;
+    width: auto;
   }
 }
 
@@ -509,4 +633,172 @@
 #projects .carousel::after {
   right: 0;
   background: linear-gradient(to left, rgba(255,255,255,0.95), rgba(255,255,255,0));
+}
+
+/* ==========================================================
+   PROJECTS MODAL
+   ========================================================== */
+
+.project-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 2000;
+}
+
+.project-modal.is-open {
+  display: block;
+}
+
+.project-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.project-modal__dialog {
+  position: relative;
+  max-width: 860px;
+  width: min(92vw, 860px);
+  margin: 6vh auto;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 32px 32px 28px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+  z-index: 1;
+  max-height: 88vh;
+  overflow-y: auto;
+}
+
+.project-modal__close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: #f3f3f3;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.project-modal__kicker {
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.project-modal__title {
+  margin: 0 0 12px;
+  font-size: 26px;
+}
+
+.project-modal__description {
+  margin: 0 0 18px;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.project-modal__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.project-modal__links a {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  color: rgba(0, 0, 0, 0.8);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.project-modal__screenshots {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.project-modal__screenshots img {
+  width: 100%;
+  display: block;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.project-modal-open {
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .project-modal__dialog {
+    padding: 24px;
+  }
+
+  .project-modal__title {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 979px) {
+  .project-modal {
+    padding-top: 96px;
+  }
+
+  .project-modal__overlay {
+    top: 71px;
+  }
+
+  .project-modal__dialog {
+    margin-top: 0;
+  }
+}
+
+@media (min-width: 980px) {
+  .project-modal {
+    padding-top: 88px;
+  }
+
+  .project-modal__overlay {
+    top: 71px;
+  }
+
+  .project-modal__dialog {
+    margin-top: 0;
+  }
+}
+
+/* ==========================================================
+   HEADER HEIGHT CONSISTENCY
+   ========================================================== */
+
+#header,
+#header.nav-solid {
+  height: 71px !important;
+}
+
+#header .row,
+#header .row [class*='col-'] {
+  height: 71px;
+}
+
+#header .row [class*='col-'] {
+  display: flex;
+  align-items: center;
+}
+
+#header nav a,
+#header #logo,
+#header.nav-solid nav a,
+#header.nav-solid #logo {
+  height: 71px;
+  line-height: 71px;
 }
