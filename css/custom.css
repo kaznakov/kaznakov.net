@@ -3,6 +3,23 @@
    Custom overrides for Namari
    ========================================================== */
 
+
+/* ==========================================================
+   GLOBAL FONT OVERRIDE (LOCAL SYSTEM FONTS)
+   ========================================================== */
+
+body,
+button,
+input,
+select,
+textarea,
+#banner h1,
+#banner h2,
+.section-title,
+.section-heading h3 {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
+}
+
 /* ==========================================================
    A) HEADER — язык/контакты справа на десктопе
    ========================================================== */
