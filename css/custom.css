@@ -157,8 +157,7 @@
 
   #header aside .social-icons .lang-social a.lang-link.is-active {
     color: rgba(0,0,0,0.95);
-    text-decoration: underline;
-    text-underline-offset: 4px;
+    text-decoration: none;
   }
 }
 
@@ -310,7 +309,7 @@
   #nav-mobile .nav-lang-group {
     display: flex !important;
     align-items: center;
-    gap: 0;
+    gap: 10px;
     border-bottom: 1px solid #e1e1e1;
     padding: 14px 0;
   }
@@ -325,9 +324,7 @@
   }
 
   #nav-mobile .nav-lang-group .nav-lang-sep {
-    display: inline-block;
-    white-space: pre;
-    width: auto;
+    display: none;
   }
 }
 
