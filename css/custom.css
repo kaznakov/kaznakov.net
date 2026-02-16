@@ -3,6 +3,7 @@
    Custom overrides for Namari
    ========================================================== */
 
+
 /* ==========================================================
    A) HEADER — язык/контакты справа на десктопе
    ========================================================== */
@@ -19,12 +20,14 @@
   #logo {
     flex: 0 0 auto;
     margin-right: 24px;
+    order: 1;
   }
 
   #nav-main {
     flex: 1 1 auto;
     display: flex;
     justify-content: center;
+    order: 2;
   }
 
   #nav-main ul {
@@ -56,6 +59,14 @@
     z-index: 20;
   }
 
+  .header-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+    order: 3;
+  }
+
   .lang-links {
     list-style: none;
     margin: 0;
@@ -63,7 +74,7 @@
 
     display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
   }
 
   .lang-links a.lang-link {
@@ -120,12 +131,26 @@
 
   #header { position: relative; }
 
+  #header .row .col-1 {
+    position: relative;
+    height: 71px;
+  }
+
+  .header-actions {
+    position: absolute;
+    right: 8px;
+    top: 0;
+    height: 71px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+
   /* Базовое положение RU/EN (вверху страницы) */
   #header aside {
-    position: absolute;
-    right: 76px;       /* место под кнопку меню справа */
-    top: 50%;
-    transform: translateY(-50%);
+    position: static;
+    transform: none;
+    height: 71px;
 
     display: inline-flex;
     align-items: center;
@@ -144,11 +169,12 @@
   .nav-collapse.sticky aside,
   .nav-collapse.stuck aside,
   .nav-collapse.is-sticky aside {
-    position: absolute !important;
-    right: 76px !important;
-    top: 50% !important;
+    position: static !important;
+    right: auto !important;
+    top: auto !important;
     bottom: auto !important;
-    transform: translateY(-50%) !important;
+    transform: none !important;
+    height: 71px !important;
 
     display: inline-flex !important;
     align-items: center !important;
@@ -156,6 +182,22 @@
 
     margin: 0 !important;
     padding: 0 !important;
+    z-index: 50 !important;
+  }
+
+  .is-sticky #header .header-actions,
+  #header.sticky .header-actions,
+  #header.stuck .header-actions,
+  .nav-collapse.sticky .header-actions,
+  .nav-collapse.stuck .header-actions,
+  .nav-collapse.is-sticky .header-actions {
+    position: absolute !important;
+    right: 8px !important;
+    top: 0 !important;
+    height: 71px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 12px !important;
     z-index: 50 !important;
   }
 
@@ -167,7 +209,9 @@
   .lang-links {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 6px;
+    width: 44px;
+    justify-content: space-between;
 
     margin: 0 !important;
     padding: 0 !important;
@@ -509,4 +553,172 @@
 #projects .carousel::after {
   right: 0;
   background: linear-gradient(to left, rgba(255,255,255,0.95), rgba(255,255,255,0));
+}
+
+/* ==========================================================
+   PROJECTS MODAL
+   ========================================================== */
+
+.project-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 2000;
+}
+
+.project-modal.is-open {
+  display: block;
+}
+
+.project-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.project-modal__dialog {
+  position: relative;
+  max-width: 860px;
+  width: min(92vw, 860px);
+  margin: 6vh auto;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 32px 32px 28px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+  z-index: 1;
+  max-height: 88vh;
+  overflow-y: auto;
+}
+
+.project-modal__close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: #f3f3f3;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.project-modal__kicker {
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.project-modal__title {
+  margin: 0 0 12px;
+  font-size: 26px;
+}
+
+.project-modal__description {
+  margin: 0 0 18px;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.project-modal__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.project-modal__links a {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  color: rgba(0, 0, 0, 0.8);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.project-modal__screenshots {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.project-modal__screenshots img {
+  width: 100%;
+  display: block;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.project-modal-open {
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .project-modal__dialog {
+    padding: 24px;
+  }
+
+  .project-modal__title {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 979px) {
+  .project-modal {
+    padding-top: 96px;
+  }
+
+  .project-modal__overlay {
+    top: 71px;
+  }
+
+  .project-modal__dialog {
+    margin-top: 0;
+  }
+}
+
+@media (min-width: 980px) {
+  .project-modal {
+    padding-top: 88px;
+  }
+
+  .project-modal__overlay {
+    top: 71px;
+  }
+
+  .project-modal__dialog {
+    margin-top: 0;
+  }
+}
+
+/* ==========================================================
+   HEADER HEIGHT CONSISTENCY
+   ========================================================== */
+
+#header,
+#header.nav-solid {
+  height: 71px !important;
+}
+
+#header .row,
+#header .row [class*='col-'] {
+  height: 71px;
+}
+
+#header .row [class*='col-'] {
+  display: flex;
+  align-items: center;
+}
+
+#header nav a,
+#header #logo,
+#header.nav-solid nav a,
+#header.nav-solid #logo {
+  height: 71px;
+  line-height: 71px;
 }
