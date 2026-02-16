@@ -28,7 +28,7 @@
     <link href="css/animate.css" rel="stylesheet" type="text/css">
 
     <!-- Google Webfonts -->
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&display=swap&subset=latin,cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>
 
     <!-- Custom -->
     <link rel="stylesheet" href="css/custom.css">
@@ -71,41 +71,39 @@
                         />
                     </div>
 
-                    <!-- Header Aside -->
-                    <aside>
-                        <!-- ✅ Языковые ссылки слева от контактных иконок -->
-                        <ul class="lang-links" aria-label="Language links">
-                            <li><a href="#" class="lang-link is-active" data-lang="en">EN</a></li>
-                            <li><a href="#" class="lang-link" data-lang="ru">RU</a></li>
-                        </ul>
+                    <div class="header-actions">
+                        <!-- Header Aside -->
+                        <aside>
+                            <!-- ✅ Контакты: разные для EN/RU (показываем нужные через i18n.js) -->
+                            <ul class="social-icons" aria-label="Contact links">
 
-                        <!-- ✅ Контакты: разные для EN/RU (показываем нужные через i18n.js) -->
-                        <ul class="social-icons" aria-label="Contact links">
+                                <li data-lang-only="en">
+                                    <a target="_blank" title="LinkedIn" href="https://www.linkedin.com/in/kaznakov">
+                                        <i class="fa fa-linkedin fa-1x"></i><span>LinkedIn</span>
+                                    </a>
+                                </li>
+                                <li data-lang-only="ru">
+                                    <a target="_blank" title="Telegram" href="http://t.me/kaznakov">
+                                        <i class="fa fa-telegram fa-1x"></i><span>Telegram</span>
+                                    </a>
+                                </li>
+                                <li data-lang-only="en">
+                                    <a target="_blank" title="E-mail" href="mailto:alex@kaznakov.net">
+                                        <i class="fa fa-at fa-1x"></i><span>E-mail</span>
+                                    </a>
+                                </li>
+                                <li data-lang-only="ru">
+                                    <a target="_blank" title="E-mail" href="mailto:alex@kaznakov.net">
+                                        <i class="fa fa-at fa-1x"></i><span>Email</span>
+                                    </a>
+                                </li>
 
-                            <li data-lang-only="en">
-                                <a target="_blank" title="LinkedIn" href="https://www.linkedin.com/in/kaznakov">
-                                    <i class="fa fa-linkedin fa-1x"></i><span>LinkedIn</span>
-                                </a>
-                            </li>
-                            <li data-lang-only="ru">
-                                <a target="_blank" title="Telegram" href="http://t.me/kaznakov">
-                                    <i class="fa fa-telegram fa-1x"></i><span>Telegram</span>
-                                </a>
-                            </li>
-                            <li data-lang-only="en">
-                                <a target="_blank" title="E-mail" href="mailto:alex@kaznakov.net">
-                                    <i class="fa fa-at fa-1x"></i><span>E-mail</span>
-                                </a>
-                            </li>
-                            <li data-lang-only="ru">
-                                <a target="_blank" title="E-mail" href="mailto:alex@kaznakov.net">
-                                    <i class="fa fa-at fa-1x"></i><span>Email</span>
-                                </a>
-                            </li>
+                            </ul>
+                        </aside>
+                        <!-- End Header Aside -->
 
-                        </ul>
-                    </aside>
-                    <!-- End Header Aside -->
+                        <div id="nav-trigger"><span></span></div>
+                    </div>
 
                     <!-- Navigation -->
                     <nav id="nav-main">
@@ -115,10 +113,11 @@
                             <li><a href="#projects" data-i18n="nav.projects"></a></li>
                             <li><a href="#certs" data-i18n="nav.certs"></a></li>
                             <li><a href="#education" data-i18n="nav.education"></a></li>
+                            <li><a href="#" class="lang-link is-active" data-lang="en">EN</a></li>
+                            <li><a href="#" class="lang-link" data-lang="ru">RU</a></li>
                         </ul>
                     </nav>
 
-                    <div id="nav-trigger"><span></span></div>
                     <nav id="nav-mobile"></nav>
 
                 </div>
@@ -206,13 +205,22 @@
                 <button class="carousel-nav next" type="button" aria-label="Scroll projects right">›</button>
 
                 <div class="carousel-track" tabindex="0" aria-label="Projects track">
-                    <a href="images/projects_images/project_image_001.jpg" data-featherlight="image" class="carousel-item wow fadeIn" data-wow-delay="0.1s">
+                    <a href="images/projects_images/project_image_001.jpg" data-featherlight="image" class="carousel-item wow fadeIn" data-wow-delay="0.1s" data-project-index="0">
                         <img src="images/projects_images/project_image_001.jpg" alt="Project"/>
                     </a>
-                    <a href="images/projects_images/project_image_002.jpg" data-featherlight="image" class="carousel-item wow fadeIn" data-wow-delay="0.3s">
+                    <a href="images/projects_images/project_image_002.jpg" data-featherlight="image" class="carousel-item wow fadeIn" data-wow-delay="0.3s" data-project-index="1">
                         <img src="images/projects_images/project_image_002.jpg" alt="Project"/>
                     </a>
-                    <a href="images/projects_images/project_image_003.jpg" data-featherlight="image" class="carousel-item wow fadeIn" data-wow-delay="0.5s">
+                    <a href="images/projects_images/project_image_003.jpg" data-featherlight="image" class="carousel-item wow fadeIn" data-wow-delay="0.5s" data-project-index="2">
+                        <img src="images/projects_images/project_image_003.jpg" alt="Project"/>
+                    </a>
+                    <a href="images/projects_images/project_image_001.jpg" data-featherlight="image" class="carousel-item wow fadeIn" data-wow-delay="0.7s" data-project-index="3">
+                        <img src="images/projects_images/project_image_001.jpg" alt="Project"/>
+                    </a>
+                    <a href="images/projects_images/project_image_002.jpg" data-featherlight="image" class="carousel-item wow fadeIn" data-wow-delay="0.9s" data-project-index="4">
+                        <img src="images/projects_images/project_image_002.jpg" alt="Project"/>
+                    </a>
+                    <a href="images/projects_images/project_image_003.jpg" data-featherlight="image" class="carousel-item wow fadeIn" data-wow-delay="1.1s" data-project-index="5">
                         <img src="images/projects_images/project_image_003.jpg" alt="Project"/>
                     </a>
                 </div>
