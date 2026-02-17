@@ -110,6 +110,7 @@
 
   #header aside .social-icons {
     list-style: none;
+    margin-top: 0 !important;
     margin: 0;
     padding: 0;
 
@@ -124,6 +125,20 @@
     padding-top: 0 !important;
     padding-bottom: 0 !important;
 
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+  }
+
+  #header aside .social-icons li a {
+    width: auto;
+  }
+
+  #header aside .social-icons li:not(.lang-social) a {
+    width: 15px;
+  }
+
+  #header aside .social-icons li:not(.lang-social) a i {
     display: inline-flex;
     align-items: center;
     line-height: 1;
