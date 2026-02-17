@@ -134,13 +134,18 @@
     width: auto;
   }
 
+  #header aside .social-icons li:not(.lang-social),
+  #header aside .social-icons li:not(.lang-social) a {
+    align-items: flex-end;
+  }
+
   #header aside .social-icons li:not(.lang-social) a {
     width: 15px;
   }
 
   #header aside .social-icons li:not(.lang-social) a i {
     display: inline-flex;
-    align-items: center;
+    align-items: flex-end;
     line-height: 1;
   }
 
