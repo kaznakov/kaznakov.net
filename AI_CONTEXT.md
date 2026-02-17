@@ -48,9 +48,25 @@
 - Base theme (`css/style.css`) centers `#status` with absolute positioning + negative margins.
 - Recent issue reported: loader visually shifted left.
 - Applied fix in `css/custom.css`:
-  - center via flex on `#preloader`
-  - neutralize legacy absolute centering on `#status` (`position: static; margin: 0; display:inline-flex; align-items:center; justify-content:center;`).
+  - force full-viewport centering via `#preloader { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }`
+  - neutralize legacy absolute offsets on `#status` (`left/top: auto; margin: 0; position: relative`)
+  - use `#status` size equal to spinner footprint (`32x32`) to remove visual left shift.
 - This makes centering robust regardless of viewport/box model side effects.
+
+## Domain / Hosting Priority (New)
+- Current business-critical issue: the website is blocked/unavailable in Russia for part of users.
+- Near-term goal: ensure the main website opens in РФ without VPN.
+- Follow-up goal: keep architecture compatible with future stable operation of Miranda assistant in РФ.
+- For any domain/hosting work, prioritize:
+  1. DNS and routing resilience for Russian ISPs.
+  2. Availability-first setup for static site delivery.
+  3. Separation of static site reachability and assistant backend reachability (so site can remain available even if AI backend has restrictions).
+
+## Domain / Hosting Workstream Notes
+- Track and document current deployment target(s), DNS provider, and CDN/proxy layer before making changes.
+- Any migration plan should include rollback steps and TTL-aware DNS switch procedure.
+- Validate accessibility from Russian networks (or trusted external checks) after each infra change.
+- Keep legal/compliance implications in mind when selecting providers/routes for РФ availability.
 
 ## External Links Security
 - `target="_blank"` links were updated to include `rel="noopener noreferrer"`.
@@ -66,6 +82,7 @@
 3. Toggle language EN/RU and verify text/logo/social visibility switches correctly.
 4. Open projects and verify modal behavior + translations.
 5. Reload page and confirm preloader appears centered and disappears correctly.
+6. For infra/domain changes: verify website availability from РФ and confirm no regressions for global access.
 
 ## Git / Collaboration Notes
 - Environment is typically non-interactive; prefer direct, deterministic commands.
