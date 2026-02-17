@@ -41,7 +41,7 @@
       "projects.modal.project1.link": "AWOS Display",
       "projects.modal.project2.title": "Miranda Chatbot",
       "projects.modal.project2.description": "AI Assistant with different behavior models. Can chat english and russian languages.",
-      "projects.modal.project2.link": "Open website",
+      "projects.modal.project2.link": "www.kaznakov.net",
       "projects.modal.project3.title": "ScanYOmail",
       "projects.modal.project3.description": "ScanYOmail makes it easy to manage your physical mail. Scan paper letters with your phone, automatically extract important details, and keep everything organized in one place. The app identifies key information such as due dates, amounts, and summaries, helping you stay on top of bills and time-sensitive mail. You can track upcoming and overdue items and add important dates directly to your calendar so nothing gets missed.",
       "projects.modal.project3.link": "App Store",
