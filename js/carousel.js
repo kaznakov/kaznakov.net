@@ -2,7 +2,8 @@
 // Универсальная карусель для .carousel
 // Логика:
 // - если элементов <= видимых: карусель выключается (без стрелок/скролла)
-// - если элементов > видимых: включается прокрутка стрелками/колесом/drag
+// - если элементов > видимых: включается прокрутка стрелками/колесом/drag/swipe
+// - стрелки скрываются на границах (в начале/в конце)
 
 (function () {
   function isMobile() {
@@ -14,18 +15,24 @@
   }
 
   function getItemsPerView(carousel) {
-    // pricing: хотим 3 на десктопе (как раньше)
     const isPricing = carousel.classList.contains("pricing-carousel");
     if (isMobile()) return 1;
     if (isTablet()) return 2;
     return isPricing ? 3 : 3;
   }
 
-  function getItemWidth(track) {
-    const first = track.querySelector(".carousel-item");
+  function getItemStep(track) {
+    const items = track.querySelectorAll(".carousel-item");
+    const first = items[0];
     if (!first) return 0;
-    const rect = first.getBoundingClientRect();
-    return rect.width;
+
+    if (items.length > 1) {
+      const second = items[1];
+      const step = second.offsetLeft - first.offsetLeft;
+      if (step > 0) return step;
+    }
+
+    return first.getBoundingClientRect().width;
   }
 
   function updateEnabledState(carousel) {
@@ -48,25 +55,36 @@
     const next = carousel.querySelector(".carousel-nav.next");
     if (!track) return;
 
-    // Обновляем состояние (вкл/выкл)
-    updateEnabledState(carousel);
+    function updateNavState() {
+      if (!prev || !next) return;
+
+      const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+      const atStart = track.scrollLeft <= 1;
+      const atEnd = maxScroll - track.scrollLeft <= 1;
+
+      prev.classList.toggle("is-hidden", atStart);
+      next.classList.toggle("is-hidden", atEnd);
+    }
+
+    function refreshState() {
+      updateEnabledState(carousel);
+      updateNavState();
+    }
 
     function scrollByOne(dir) {
       if (carousel.classList.contains("is-disabled")) return;
-      const w = getItemWidth(track);
-      if (!w) return;
-      track.scrollBy({ left: dir * w, behavior: "smooth" });
+      const step = getItemStep(track);
+      if (!step) return;
+      track.scrollBy({ left: dir * step, behavior: "smooth" });
     }
 
     if (prev) prev.addEventListener("click", () => scrollByOne(-1));
     if (next) next.addEventListener("click", () => scrollByOne(1));
 
-    // Wheel -> horizontal scroll
     track.addEventListener(
       "wheel",
       (e) => {
         if (carousel.classList.contains("is-disabled")) return;
-        // превращаем вертикальный скролл в горизонтальный только над треком
         if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
           e.preventDefault();
           track.scrollLeft += e.deltaY;
@@ -108,8 +126,59 @@
       track.scrollLeft = scrollLeft - walk;
     });
 
-    // Recalc on resize (меняется itemsPerView)
-    window.addEventListener("resize", () => updateEnabledState(carousel));
+    // Swipe (touch)
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchDragging = false;
+
+    track.addEventListener(
+      "touchstart",
+      (e) => {
+        if (carousel.classList.contains("is-disabled")) return;
+        const t = e.touches[0];
+        touchStartX = t.clientX;
+        touchStartY = t.clientY;
+        touchDragging = true;
+      },
+      { passive: true }
+    );
+
+    track.addEventListener(
+      "touchmove",
+      (e) => {
+        if (!touchDragging || carousel.classList.contains("is-disabled")) return;
+        const t = e.touches[0];
+        const dx = Math.abs(t.clientX - touchStartX);
+        const dy = Math.abs(t.clientY - touchStartY);
+
+        // блокируем вертикальный скролл только при явном горизонтальном свайпе
+        if (dx > dy) e.preventDefault();
+      },
+      { passive: false }
+    );
+
+    track.addEventListener(
+      "touchend",
+      (e) => {
+        if (!touchDragging || carousel.classList.contains("is-disabled")) return;
+        touchDragging = false;
+
+        const t = e.changedTouches[0];
+        const deltaX = t.clientX - touchStartX;
+        const threshold = 36;
+
+        if (Math.abs(deltaX) < threshold) return;
+        if (deltaX < 0) scrollByOne(1);
+        else scrollByOne(-1);
+      },
+      { passive: true }
+    );
+
+    track.addEventListener("scroll", updateNavState, { passive: true });
+    window.addEventListener("resize", refreshState);
+
+    refreshState();
+    requestAnimationFrame(updateNavState);
   }
 
   document.addEventListener("DOMContentLoaded", () => {
