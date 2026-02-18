@@ -482,6 +482,7 @@
 
   cursor: grab;
   user-select: none;
+  touch-action: pan-y;
 
   -ms-overflow-style: none;
 
@@ -541,6 +542,13 @@
 .carousel-nav:hover { background: rgba(255,255,255,0.98); }
 .carousel-nav.prev { left: 8px; }
 .carousel-nav.next { right: 8px; }
+
+.carousel-nav.is-hidden {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
 
 /* ==========================================================
    F) MASK — Projects и certs; Education без маски
