@@ -645,6 +645,28 @@
   border-radius: 4px;
 }
 
+@media (max-width: 640px) {
+  #education {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  #education .carousel-track {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    scroll-padding-left: 0;
+    scroll-padding-right: 0;
+    gap: 0;
+  }
+
+  #education .carousel-item {
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
 /* ==========================================================
    H) Remove gradient rectangles for Education
    ========================================================== */

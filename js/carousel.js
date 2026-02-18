@@ -21,9 +21,17 @@
     return isPricing ? 3 : 3;
   }
 
-  function getItemWidth(track) {
-    const first = track.querySelector(".carousel-item");
+  function getItemStep(track) {
+    const items = track.querySelectorAll(".carousel-item");
+    const first = items[0];
     if (!first) return 0;
+
+    if (items.length > 1) {
+      const second = items[1];
+      const step = second.offsetLeft - first.offsetLeft;
+      if (step > 0) return step;
+    }
+
     return first.getBoundingClientRect().width;
   }
 
@@ -65,9 +73,9 @@
 
     function scrollByOne(dir) {
       if (carousel.classList.contains("is-disabled")) return;
-      const w = getItemWidth(track);
-      if (!w) return;
-      track.scrollBy({ left: dir * w, behavior: "smooth" });
+      const step = getItemStep(track);
+      if (!step) return;
+      track.scrollBy({ left: dir * step, behavior: "smooth" });
     }
 
     if (prev) prev.addEventListener("click", () => scrollByOne(-1));
