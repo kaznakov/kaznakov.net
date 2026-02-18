@@ -625,15 +625,21 @@
 
 #education .carousel-item {
   overflow: hidden;
-  background: #ffffff !important;
+  padding: 0 10px;
+  background: transparent !important;
+  border: 0;
+  box-shadow: none;
+}
+
+#education .carousel-item .education-block {
+  background: #ffffff;
   border: 2px solid transparent;
   border-radius: 6px;
-  padding: 12px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.08);
   transition: border-color 200ms ease, box-shadow 200ms ease;
 }
 
-#education .carousel-item:hover {
+#education .carousel-item:hover .education-block {
   border-color: rgba(0,0,0,0.25);
   box-shadow: 0 10px 26px rgba(0,0,0,0.14);
 }
@@ -657,16 +663,6 @@
     max-width: 100%;
     padding-left: 10px;
     padding-right: 10px;
-    background: transparent !important;
-    border-color: transparent;
-    box-shadow: none;
-  }
-
-  #education .carousel-item .education-block {
-    background: #ffffff;
-    border: 2px solid transparent;
-    border-radius: 6px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
   }
 }
 
