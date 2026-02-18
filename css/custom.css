@@ -647,23 +647,21 @@
 
 @media (max-width: 640px) {
   #education {
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   #education .carousel-track {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    scroll-padding-left: 0;
-    scroll-padding-right: 0;
+    padding-left: 44px !important;
+    padding-right: 44px !important;
+    scroll-padding-left: 44px;
+    scroll-padding-right: 44px;
     gap: 0;
   }
 
   #education .carousel-item {
     flex: 0 0 100%;
     max-width: 100%;
-    padding-left: 0;
-    padding-right: 0;
   }
 }
 
