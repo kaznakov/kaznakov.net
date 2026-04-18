@@ -7,7 +7,7 @@
 //    - мы перепривязываем клик на window.scrollTo({top:0}) при загрузке и при kaz:langChanged.
 // 2) Остальная логика без изменений.
 
-function getMirandaApiUrl() {
+function getSalesAgentApiUrl() {
   const host = window.location.hostname;
   const isLocal =
     host === "localhost" ||
@@ -18,7 +18,7 @@ function getMirandaApiUrl() {
   return "https://kaznakov-net.onrender.com/api/chat";
 }
 
-const MIRANDA_API_URL = getMirandaApiUrl();
+const SALES_AGENT_API_URL = getSalesAgentApiUrl();
 
 function getLang() {
   try {
@@ -36,8 +36,8 @@ function t(key) {
   } catch (_) {}
 
   const fallback = {
-    "agent.greet1": "Hi! I'm Miranda. How can I help?",
-    "agent.greet2": "Try commands: /mode critic or /mode optimizer. Language: /lang en or /lang ru.",
+    "agent.greet1": "Hi! I'm the AI Sales Department. How can I help?",
+    "agent.greet2": "Share your goal, timeline, and budget range. I'll suggest the best next step.",
     "agent.greet3": "Current backend: ",
     "agent.placeholder": "Type your message..."
   };
@@ -79,10 +79,10 @@ document.addEventListener("DOMContentLoaded", function () {
   bindTopButton();
 
   // -----------------------------
-  // Miranda — основной код
+  // AI Sales Department — основной код
   // -----------------------------
   if (!toggle || !win || !form || !input || !messagesEl) {
-    console.error("Miranda: missing DOM elements. Check ids in index.html");
+    console.error("AI Sales Department: missing DOM elements. Check ids in index.html");
     return;
   }
 
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
     div.textContent =
       (role === "user"
         ? (currentLang === "ru" ? "Вы: " : "You: ")
-        : "Miranda: ") + text;
+        : "AI Sales: ") + text;
     messagesEl.appendChild(div);
     messagesEl.scrollTop = messagesEl.scrollHeight;
   }
@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!firstOpen) return;
     appendMessage("assistant", t("agent.greet1"));
     appendMessage("assistant", t("agent.greet2"));
-    appendMessage("assistant", t("agent.greet3") + MIRANDA_API_URL);
+    appendMessage("assistant", t("agent.greet3") + SALES_AGENT_API_URL);
     firstOpen = false;
   }
 
@@ -229,7 +229,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (sendBtn) sendBtn.disabled = true;
 
     try {
-      const resp = await fetch(MIRANDA_API_URL, {
+      const resp = await fetch(SALES_AGENT_API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: text, history, mode: currentMode, lang: currentLang })
