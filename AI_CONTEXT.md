@@ -3,7 +3,7 @@
 ## Project Overview
 - Repository: personal/static portfolio website (`kaznakov.net`) with bilingual UI (EN/RU).
 - Main stack: static HTML + CSS + vanilla/jQuery JS.
-- Purpose: landing page with sections for hero, about, projects, certificates, education, contact/footer, plus AI assistant widget.
+- Purpose: landing page with sections for hero, about, projects, certificates, education, contact/footer, plus AI sales department widget.
 - Scope guardrail: this project context tracks only `kaznakov.net` (and `www.kaznakov.net`). Treat `awosd.kaznakov.net` / `www.awosd.kaznakov.net` as out of scope and do not use them in this repo's planning/changes.
 
 ## Top-Level Structure
@@ -57,7 +57,7 @@
 ## Domain / Hosting Priority (Current)
 - Current business-critical issue: intermittent inaccessibility for users on mobile Beeline in Russia.
 - Near-term goal: keep `www.kaznakov.net` + HTTPS stable for all providers and minimize operator-specific failures.
-- Follow-up goal: keep architecture compatible with future stable operation of Miranda assistant in РФ.
+- Follow-up goal: keep architecture compatible with future stable operation of AI sales assistant in РФ.
 - For any domain/hosting work, prioritize:
   1. DNS and routing resilience for Russian ISPs.
   2. Availability-first setup for static site delivery.

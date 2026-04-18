@@ -36,15 +36,15 @@
       "projects.modal.kicker": "PROJECT",
       "projects.modal.ariaLabel": "Project details",
       "projects.modal.close": "Close project details",
-      "projects.modal.project1.title": "AWOS Display",
-      "projects.modal.project1.description": "An operational METAR decoding tool for virtual ATC. Focused on runway-oriented weather awareness: pressure, visibility, runway state, RVR, and wind components.",
-      "projects.modal.project1.link": "AWOS Display",
-      "projects.modal.project2.title": "Miranda Chatbot",
-      "projects.modal.project2.description": "AI Assistant with different behavior models. Can chat english and russian languages.",
-      "projects.modal.project2.link": "www.kaznakov.net",
-      "projects.modal.project3.title": "ScanYOmail",
-      "projects.modal.project3.description": "ScanYOmail makes it easy to manage your physical mail. Scan paper letters with your phone, automatically extract important details, and keep everything organized in one place. The app identifies key information such as due dates, amounts, and summaries, helping you stay on top of bills and time-sensitive mail. You can track upcoming and overdue items and add important dates directly to your calendar so nothing gets missed.",
-      "projects.modal.project3.link": "App Store",
+      "projects.modal.project1.title": "ScanyoMail",
+      "projects.modal.project1.description": "Email search and monitoring service for marketing and security teams.",
+      "projects.modal.project1.link": "Visit project site",
+      "projects.modal.project2.title": "KAZNAKOV.NET",
+      "projects.modal.project2.description": "Personal website with an AI assistant and bilingual interface.",
+      "projects.modal.project2.link": "Open website",
+      "projects.modal.project3.title": "AI-отдел продаж",
+      "projects.modal.project3.description": "AI sales assistant for lead qualification, offer navigation, and next-step booking.",
+      "projects.modal.project3.link": "View documentation",
       "projects.modal.project4.title": "AI Catalog",
       "projects.modal.project4.description": "Curated AI tools catalog with filters, ratings, and practical use cases.",
       "projects.modal.project4.link": "In progress",
@@ -85,11 +85,11 @@
 
       "footer.madeby": 'Made with love by <a href="https://www.shapingrain.com">ShapingRain</a>',
 
-      "agent.title": "Miranda",
+      "agent.title": "AI Sales Department",
       "agent.placeholder": "Type your message...",
 
-      "agent.greet1": "Hi! I’m Miranda — a virtual assistant for Alexey Kaznakov. You can ask me about Alexey, as well as the projects and products we’re building.",
-      "agent.greet2": "Try my modes by using these commands: /assistant or /saler",
+      "agent.greet1": "Hi! I’m the AI Sales Department. I help you choose the right service, estimate scope, and move to the next step quickly.",
+      "agent.greet2": "Share your goal, timeline, and budget range — I will suggest the best format and next step.",
     },
 
     ru: {
@@ -124,15 +124,15 @@
       "projects.modal.kicker": "ПРОЕКТ",
       "projects.modal.ariaLabel": "Информация о проекте",
       "projects.modal.close": "Закрыть информацию о проекте",
-      "projects.modal.project1.title": "AWOS Display",
-      "projects.modal.project1.description": "Инструмент для быстрого оперативного анализа METAR для виртуальных сессий авиадиспетчеров и обучения. Погода, давление, видимость, состояние ВПП, RVR и боковая/встречная компонента ветра по выбранной ВПП.",
-      "projects.modal.project1.link": "AWOS Display",
-      "projects.modal.project2.title": "Чат-бот Миранда",
-      "projects.modal.project2.description": "AI-ассистент с различными ролями и моделями поведения. Общается на русском и английском языках.",
-      "projects.modal.project2.link": "www.kaznakov.net",
-      "projects.modal.project3.title": "ScanYOmail",
-      "projects.modal.project3.description": "Приложение помогает удобно управлять вашей физической почтой. Сканируйте бумажные письма с помощью камеры телефона, автоматически извлекайте важные данные и храните всё в одном месте. Определяет ключевую информацию — сроки оплаты, суммы и краткое содержание писем — и помогает не пропускать счета и важные уведомления. Вы можете отслеживать предстоящие и просроченные события, а также добавлять важные даты прямо в календарь.",
-      "projects.modal.project3.link": "App Store",
+      "projects.modal.project1.title": "ScanyoMail",
+      "projects.modal.project1.description": "Сервис поиска и мониторинга e-mail адресов для маркетинга и безопасности.",
+      "projects.modal.project1.link": "Сайт проекта",
+      "projects.modal.project2.title": "KAZNAKOV.NET",
+      "projects.modal.project2.description": "Персональный сайт с AI-ассистентом и двуязычным интерфейсом.",
+      "projects.modal.project2.link": "Открыть сайт",
+      "projects.modal.project3.title": "AI-отдел продаж",
+      "projects.modal.project3.description": "AI-помощник отдела продаж для квалификации заявок, подбора формата и согласования следующего шага.",
+      "projects.modal.project3.link": "Документация",
       "projects.modal.project4.title": "AI Catalog",
       "projects.modal.project4.description": "Каталог AI-инструментов с фильтрами, рейтингами и реальными сценариями.",
       "projects.modal.project4.link": "В разработке",
@@ -173,11 +173,11 @@
 
       "footer.madeby": 'Сделано с любовью — <a href="https://www.shapingrain.com">ShapingRain</a>',
 
-      "agent.title": "Миранда",
+      "agent.title": "AI-отдел продаж",
       "agent.placeholder": "Введите сообщение...",
 
-      "agent.greet1": "Привет! Я Миранда. Виртуальный ассиситен Алексея Казнакова. Вы можете спроситьменя об авторе, проектах и продуктах, которые мы разрабатываем",
-      "agent.greet2": "Попробуйте мои режимы: /assistant или /saler."
+      "agent.greet1": "Привет! Я AI-отдел продаж. Помогу выбрать подходящий формат, оценить объём работ и перейти к следующему шагу.",
+      "agent.greet2": "Напишите задачу, сроки и ориентир по бюджету — предложу лучший вариант и следующий шаг."
     }
   };
 
