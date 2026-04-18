@@ -7,18 +7,23 @@
 //    - мы перепривязываем клик на window.scrollTo({top:0}) при загрузке и при kaz:langChanged.
 // 2) Остальная логика без изменений.
 
-function getSalesAgentApiUrl() {
+function getSalesAgentApiCandidates() {
   const host = window.location.hostname;
   const isLocal =
     host === "localhost" ||
     host === "127.0.0.1" ||
     host === "0.0.0.0";
 
-  if (isLocal) return "http://localhost:3030/api/chat";
-  return "https://kaznakov-net.onrender.com/api/chat";
+  if (isLocal) {
+    return ["http://localhost:3030/api/chat", "/api/chat"];
+  }
+
+  // 1) same-origin proxy (if configured), 2) direct Render fallback
+  return ["/api/chat", "https://kaznakov-net.onrender.com/api/chat"];
 }
 
-const SALES_AGENT_API_URL = getSalesAgentApiUrl();
+const SALES_AGENT_API_CANDIDATES = getSalesAgentApiCandidates();
+let activeSalesApiUrl = SALES_AGENT_API_CANDIDATES[0] || "";
 
 function getLang() {
   try {
@@ -110,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!firstOpen) return;
     appendMessage("assistant", t("agent.greet1"));
     appendMessage("assistant", t("agent.greet2"));
-    appendMessage("assistant", t("agent.greet3") + SALES_AGENT_API_URL);
+    appendMessage("assistant", t("agent.greet3") + activeSalesApiUrl);
     firstOpen = false;
   }
 
@@ -182,6 +187,45 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("resize", updateFloatingButtonsOffset);
   updateFloatingButtonsOffset();
 
+  async function postChatWithFallback(payload) {
+    let lastError = null;
+
+    for (const url of SALES_AGENT_API_CANDIDATES) {
+      try {
+        const resp = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        let data;
+        try {
+          data = await resp.json();
+        } catch (_) {
+          throw new Error(`Backend returned non-JSON. HTTP ${resp.status}`);
+        }
+
+        if (!resp.ok || data.error) {
+          throw new Error(data?.details || data?.error || `HTTP ${resp.status}`);
+        }
+
+        activeSalesApiUrl = url;
+        return data;
+      } catch (err) {
+        lastError = err;
+      }
+    }
+
+    throw lastError || new Error("All API endpoints failed");
+  }
+
+  function networkErrorMessage(lang) {
+    if (lang === "ru") {
+      return "Сервис AI-отдела продаж временно недоступен. Напишите, пожалуйста, в Telegram @kaznakov или на email alex@kaznakov.net — я свяжусь с вами вручную.";
+    }
+    return "The AI Sales service is temporarily unavailable. Please contact us via Telegram @kaznakov or email alex@kaznakov.net, and we will continue manually.";
+  }
+
   // ----------------------------------------------------------
   // Chat submit
   // ----------------------------------------------------------
@@ -229,29 +273,20 @@ document.addEventListener("DOMContentLoaded", function () {
     if (sendBtn) sendBtn.disabled = true;
 
     try {
-      const resp = await fetch(SALES_AGENT_API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text, history, mode: currentMode, lang: currentLang })
+      const data = await postChatWithFallback({
+        message: text,
+        history,
+        mode: currentMode,
+        lang: currentLang
       });
-
-      let data;
-      try {
-        data = await resp.json();
-      } catch (_) {
-        throw new Error(`Backend returned non-JSON. HTTP ${resp.status}`);
-      }
-
-      if (!resp.ok || data.error) {
-        throw new Error(data?.details || data?.error || `HTTP ${resp.status}`);
-      }
 
       const reply = data.reply || "";
       history.push({ role: "user", content: text });
       history.push({ role: "assistant", content: reply });
       appendMessage("assistant", reply || (currentLang === "ru" ? "(пустой ответ)" : "(empty reply)"));
     } catch (err) {
-      appendMessage("assistant", (currentLang === "ru" ? "Ошибка: " : "Error: ") + (err.message || err));
+      console.error("AI Sales chat error:", err);
+      appendMessage("assistant", networkErrorMessage(currentLang));
     } finally {
       if (sendBtn) sendBtn.disabled = false;
     }
