@@ -1,5 +1,6 @@
 const path = require("path");
 const fs = require("fs");
+const http = require("http");
 const OpenAI = require("openai");
 require("dotenv").config({ path: path.join(__dirname, ".env") });
 
@@ -197,4 +198,19 @@ console.log("Telegram AI Sales bot is running (long polling)...");
 pollUpdates().catch((err) => {
   console.error("Fatal bot error:", err);
   process.exit(1);
+});
+
+const PORT = Number(process.env.PORT || 10000);
+const healthServer = http.createServer((req, res) => {
+  if (req.url === "/health") {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ ok: true, service: "telegram-ai-sales-bot" }));
+    return;
+  }
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.end("Telegram bot is running");
+});
+
+healthServer.listen(PORT, () => {
+  console.log(`Health server listening on :${PORT}`);
 });

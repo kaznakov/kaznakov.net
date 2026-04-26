@@ -51,3 +51,8 @@ If Render uses repository root (`/`) instead of `agent/`, use:
 Root `package.json` includes `telegram` script that starts `agent/telegram-bot.js`.
 
 If you set Root Directory to `agent`, the same start command works there as well.
+
+### Render service type
+
+- Best option: **Background Worker** (no inbound port requirement).
+- If you use **Web Service**, this bot now binds `PORT` and exposes `/health` to satisfy Render port scanning.
