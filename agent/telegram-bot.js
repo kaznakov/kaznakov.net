@@ -318,6 +318,14 @@ async function handleUserMessage(chatId, text) {
   }
 }
 
+
+async function initTelegram() {
+  // Ensure long polling works even if webhook was previously configured.
+  await tg("deleteWebhook", { drop_pending_updates: false });
+  const me = await tg("getMe");
+  console.log(`Telegram bot connected: @${me.username || "unknown"}`);
+}
+
 async function pollUpdates() {
   while (true) {
     try {
@@ -326,7 +334,11 @@ async function pollUpdates() {
         updateOffset = upd.update_id;
         const msg = upd.message;
         if (!msg || typeof msg.text !== "string") continue;
-        await handleUserMessage(msg.chat.id, msg.text.trim());
+        try {
+          await handleUserMessage(msg.chat.id, msg.text.trim());
+        } catch (err) {
+          console.error("Update handling error:", err.message || err);
+        }
       }
     } catch (err) {
       console.error("Polling error:", err.message || err);
@@ -336,10 +348,15 @@ async function pollUpdates() {
 }
 
 console.log("Telegram AI Sales bot is running (long polling)...");
-pollUpdates().catch((err) => {
-  console.error("Fatal bot error:", err);
-  process.exit(1);
-});
+(async () => {
+  try {
+    await initTelegram();
+    await pollUpdates();
+  } catch (err) {
+    console.error("Fatal bot error:", err);
+    process.exit(1);
+  }
+})();
 
 const PORT = Number(process.env.PORT || 10000);
 const healthServer = http.createServer((req, res) => {

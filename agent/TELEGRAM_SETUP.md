@@ -115,3 +115,13 @@ If you set Root Directory to `agent`, the same start command works there as well
 /role mssp_cybersecurity
 /mode qualify
 ```
+
+## Если бот "молчит" после деплоя
+
+Проверьте типовые причины:
+
+1. У бота был настроен webhook, а вы запускаете long polling.
+   - В текущей версии бот автоматически вызывает `deleteWebhook` при старте.
+2. Запущено несколько инстансов бота одновременно (конфликт `getUpdates`).
+3. Неверный `TELEGRAM_BOT_TOKEN` или отсутствует `OPENAI_API_KEY`.
+4. Ограничения сети/провайдера до Telegram/OpenAI.
