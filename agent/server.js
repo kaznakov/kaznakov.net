@@ -84,7 +84,7 @@ app.post("/api/chat", async (req, res) => {
     }
 
     const langEffective = lang || detectLangFromText(message);
-    const modeEffective = mode || "mentor";
+    const modeEffective = mode || "qualify";
 
     const systemPrompt = buildSystemPrompt(langEffective, modeEffective);
 

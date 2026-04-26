@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   const history = [];
-  let currentMode = "mentor";
+  let currentMode = "qualify";
   let currentLang = getLang();
   let firstOpen = true;
 
@@ -219,11 +219,26 @@ document.addEventListener("DOMContentLoaded", function () {
     throw lastError || new Error("All API endpoints failed");
   }
 
-  function networkErrorMessage(lang) {
+  function buildOfflineSalesReply(lang, userText) {
+    const text = (userText || "").toLowerCase();
+
     if (lang === "ru") {
-      return "Сервис AI-отдела продаж временно недоступен. Напишите, пожалуйста, в Telegram @kaznakov или на email alex@kaznakov.net — я свяжусь с вами вручную.";
+      if (/цена|стоим|бюджет|price/.test(text)) {
+        return "AI-канал сейчас нестабилен, но могу сразу собрать бриф для оценки. Напишите: 1) ниша/продукт, 2) задача, 3) желаемый срок, 4) ориентир бюджета. После этого передам запрос и вернусь с вилкой по стоимости.";
+      }
+      if (/срок|когда|deadline|быстро/.test(text)) {
+        return "Чтобы оценить срок, пришлите 3 пункта: объём задачи, текущие материалы/доступы, желаемая дата запуска. Я зафиксирую запрос и передам в работу.";
+      }
+      return "AI-канал временно недоступен, но я могу продолжить как отдел продаж. Пришлите коротко: цель проекта, нишу, срок, бюджет и контакт (Telegram/email). Также можно сразу написать: Telegram @kaznakov, email alex@kaznakov.net.";
     }
-    return "The AI Sales service is temporarily unavailable. Please contact us via Telegram @kaznakov or email alex@kaznakov.net, and we will continue manually.";
+
+    if (/price|budget|cost/.test(text)) {
+      return "The AI channel is unstable right now, but I can collect a brief for estimation immediately. Please share: 1) niche/product, 2) target outcome, 3) timeline, 4) budget range. I'll pass it to the team and follow up with a price range.";
+    }
+    if (/timeline|deadline|when|asap/.test(text)) {
+      return "To estimate timeline, please share: scope, existing assets/access, and desired launch date. I will log it and pass it to the team.";
+    }
+    return "The AI channel is temporarily unavailable, but I can continue as the sales desk. Please share your goal, niche, timeline, budget, and contact (Telegram/email). You can also contact directly: Telegram @kaznakov, email alex@kaznakov.net.";
   }
 
   // ----------------------------------------------------------
@@ -241,8 +256,8 @@ document.addEventListener("DOMContentLoaded", function () {
         appendMessage("assistant", currentLang === "ru" ? `Режим: ${m}.` : `Mode set to: ${m}.`);
       } else {
         appendMessage("assistant", currentLang === "ru"
-          ? "Укажите режим, например: /mode mentor /mode critic /mode optimizer"
-          : "Specify a mode, e.g.: /mode mentor /mode critic /mode optimizer");
+          ? "Укажите режим, например: /mode qualify /mode offer /mode closing"
+          : "Specify a mode, e.g.: /mode qualify /mode offer /mode closing");
       }
       input.value = "";
       return;
@@ -286,7 +301,9 @@ document.addEventListener("DOMContentLoaded", function () {
       appendMessage("assistant", reply || (currentLang === "ru" ? "(пустой ответ)" : "(empty reply)"));
     } catch (err) {
       console.error("AI Sales chat error:", err);
-      appendMessage("assistant", networkErrorMessage(currentLang));
+      const offlineReply = buildOfflineSalesReply(currentLang, text);
+      history.push({ role: "assistant", content: offlineReply });
+      appendMessage("assistant", offlineReply);
     } finally {
       if (sendBtn) sendBtn.disabled = false;
     }
