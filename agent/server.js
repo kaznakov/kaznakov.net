@@ -84,7 +84,7 @@ app.post("/api/chat", async (req, res) => {
     }
 
     const langEffective = lang || detectLangFromText(message);
-    const modeEffective = mode || "mentor";
+    const modeEffective = mode || "qualify";
 
     const systemPrompt = buildSystemPrompt(langEffective, modeEffective);
 
@@ -126,6 +126,6 @@ app.post("/api/chat", async (req, res) => {
 
 // ---------- Start server ----------
 app.listen(PORT, () => {
-  console.log(`Miranda agent listening on http://localhost:${PORT}`);
+  console.log(`AI Sales agent listening on http://localhost:${PORT}`);
   console.log(`Healthcheck: http://localhost:${PORT}/health`);
 });
