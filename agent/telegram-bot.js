@@ -348,15 +348,22 @@ async function pollUpdates() {
 }
 
 console.log("Telegram AI Sales bot is running (long polling)...");
-(async () => {
-  try {
-    await initTelegram();
-    await pollUpdates();
-  } catch (err) {
-    console.error("Fatal bot error:", err);
-    process.exit(1);
+
+async function runBotForever() {
+  while (true) {
+    try {
+      await initTelegram();
+      await pollUpdates(); // normally infinite; exits only on unexpected fatal error
+    } catch (err) {
+      console.error("Bot runtime error, retrying in 5s:", err.message || err);
+      await new Promise((r) => setTimeout(r, 5000));
+    }
   }
-})();
+}
+
+runBotForever().catch((err) => {
+  console.error("Unexpected top-level error:", err);
+});
 
 const PORT = Number(process.env.PORT || 10000);
 const healthServer = http.createServer((req, res) => {

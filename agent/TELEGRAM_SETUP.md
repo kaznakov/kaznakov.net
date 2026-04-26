@@ -125,3 +125,6 @@ If you set Root Directory to `agent`, the same start command works there as well
 2. Запущено несколько инстансов бота одновременно (конфликт `getUpdates`).
 3. Неверный `TELEGRAM_BOT_TOKEN` или отсутствует `OPENAI_API_KEY`.
 4. Ограничения сети/провайдера до Telegram/OpenAI.
+
+5. Временный сбой Telegram/OpenAI не должен требовать редеплоя.
+   - Бот запускается в бесконечном цикле с авто-повтором и паузой при ошибке.
