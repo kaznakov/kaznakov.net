@@ -1,15 +1,16 @@
 {
-    "name": "ai-assistant",
-    "version": "0.1.0",
-    "private": true,
-    "type": "module",
-    "scripts": {
-    "dev": "node server.js"
-    },
-    "dependencies": {
+  "name": "ai-assistant",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node agent/server.js",
+    "telegram": "node agent/telegram-bot.js"
+  },
+  "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "openai": "^4.58.1"
-    }
+  }
 }
