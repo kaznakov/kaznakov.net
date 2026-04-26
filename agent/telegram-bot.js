@@ -99,20 +99,32 @@ async function sendTyping(chatId) {
   return tg("sendChatAction", { chat_id: chatId, action: "typing" });
 }
 
+function parseCommand(text) {
+  const parts = String(text || "").trim().split(/\s+/);
+  const raw = parts[0] || "";
+  if (!raw.startsWith("/")) return { cmd: "", args: [] };
+  const cmd = raw.split("@")[0].toLowerCase(); // supports /start@BotName
+  const args = parts.slice(1);
+  return { cmd, args };
+}
+
 async function handleCommand(chatId, text, session) {
-  if (text === "/start" || text === "/help") {
+  const { cmd, args } = parseCommand(text);
+  if (!cmd) return false;
+
+  if (cmd === "/start" || cmd === "/help") {
     await sendMessage(chatId, helpText(session.lang));
     return true;
   }
 
-  if (text === "/reset") {
+  if (cmd === "/reset") {
     sessions.set(chatId, { lang: session.lang || "ru", mode: "qualify", history: [] });
     await sendMessage(chatId, session.lang === "ru" ? "Контекст очищен." : "Context cleared.");
     return true;
   }
 
-  if (text.startsWith("/lang ")) {
-    const lang = text.split(/\s+/)[1]?.toLowerCase();
+  if (cmd === "/lang") {
+    const lang = (args[0] || "").toLowerCase();
     if (lang !== "ru" && lang !== "en") {
       await sendMessage(chatId, "Use /lang ru or /lang en");
       return true;
@@ -122,8 +134,8 @@ async function handleCommand(chatId, text, session) {
     return true;
   }
 
-  if (text.startsWith("/mode ")) {
-    const mode = text.split(/\s+/)[1]?.toLowerCase();
+  if (cmd === "/mode") {
+    const mode = (args[0] || "").toLowerCase();
     const modes = session.lang === "ru" ? modesRu : modesEn;
     if (!modes[mode]) {
       await sendMessage(chatId, `Unknown mode. Available: ${Object.keys(modes).join(", ")}`);
@@ -134,7 +146,9 @@ async function handleCommand(chatId, text, session) {
     return true;
   }
 
-  return false;
+  // Unknown command: show help instead of silence
+  await sendMessage(chatId, helpText(session.lang));
+  return true;
 }
 
 async function handleUserMessage(chatId, text) {
