@@ -93,3 +93,25 @@ If you set Root Directory to `agent`, the same start command works there as well
 
 9. **Health endpoint для Render Web Service**
    Дополнительно поднимается HTTP-сервер на `PORT` с `/health`, чтобы Render видел открытый порт и не останавливал деплой.
+
+## Роли (5 нишевых направлений) и меню
+
+В боте включены 5 нишевых бизнес-ролей для AI-отдела продаж:
+
+1. `ivf_clinic` — IVF / репродуктивная клиника
+2. `industrial_b2b` — B2B промышленное оборудование
+3. `premium_real_estate` — премиальная недвижимость
+4. `mssp_cybersecurity` — MSSP / кибербезопасность
+5. `immigration_legal` — иммиграционные юридические услуги
+
+Как менять роль:
+
+- через команду: `/role <key>`
+- через меню: `/roles` (клавиатура с кнопками ролей)
+
+Пример:
+
+```bash
+/role mssp_cybersecurity
+/mode qualify
+```

@@ -27,6 +27,40 @@ const systemRu = loadText("system_ru.txt");
 const modesEn = loadJSON("modes_en.json");
 const modesRu = loadJSON("modes_ru.json");
 
+const ROLES = {
+  ivf_clinic: {
+    titleRu: "IVF/репродуктивная клиника",
+    titleEn: "IVF / Fertility Clinic",
+    promptRu: "Фокусируйся на продажах для репродуктивной клиники: первичные консультации, программы ЭКО, этапы маршрута пациента, деликатная коммуникация, конфиденциальность.",
+    promptEn: "Focus on sales for a fertility clinic: first consultations, IVF programs, patient journey stages, sensitive communication, and confidentiality."
+  },
+  industrial_b2b: {
+    titleRu: "B2B промышленное оборудование",
+    titleEn: "B2B Industrial Equipment",
+    promptRu: "Фокусируйся на длинных B2B-сделках: квалификация по отрасли, объему закупки, спецификациям, интеграции, циклу согласований и тендерам.",
+    promptEn: "Focus on long B2B cycles: qualification by industry, procurement volume, specs, integration requirements, approval cycles, and tenders."
+  },
+  premium_real_estate: {
+    titleRu: "Премиальная недвижимость",
+    titleEn: "Premium Real Estate",
+    promptRu: "Фокусируйся на премиальной недвижимости: инвестиционные цели, стиль жизни, срочность сделки, статус клиента, приватные показы и юридические этапы.",
+    promptEn: "Focus on premium real estate: investment goals, lifestyle fit, urgency, client profile, private showings, and legal closing stages."
+  },
+  mssp_cybersecurity: {
+    titleRu: "MSSP / кибербезопасность",
+    titleEn: "MSSP / Cybersecurity",
+    promptRu: "Фокусируйся на продажах услуг кибербезопасности: профиль рисков, требования комплаенса, текущий стек, SLA, бюджет и пилот/аудит как первый шаг.",
+    promptEn: "Focus on cybersecurity service sales: risk profile, compliance requirements, current stack, SLA, budget, and pilot/audit as next step."
+  },
+  immigration_legal: {
+    titleRu: "Иммиграционный legal",
+    titleEn: "Immigration Legal Services",
+    promptRu: "Фокусируйся на продаже иммиграционных юридических услуг: страна/цель, категория кейса, сроки, документы, риски отказа и план подготовки досье.",
+    promptEn: "Focus on immigration legal sales: country/goal, case category, timeline, documents, refusal risks, and dossier preparation plan."
+  }
+};
+
+const DEFAULT_ROLE = "ivf_clinic";
 const sessions = new Map();
 let updateOffset = 0;
 
@@ -34,21 +68,58 @@ function detectLang(text = "") {
   return /[а-яА-ЯёЁ]/.test(text) ? "ru" : "en";
 }
 
-function buildSystemPrompt(lang, modeName) {
+function roleTitle(roleKey, lang) {
+  const role = ROLES[roleKey] || ROLES[DEFAULT_ROLE];
+  return lang === "ru" ? role.titleRu : role.titleEn;
+}
+
+function rolePrompt(roleKey, lang) {
+  const role = ROLES[roleKey] || ROLES[DEFAULT_ROLE];
+  return lang === "ru" ? role.promptRu : role.promptEn;
+}
+
+function buildSystemPrompt(lang, modeName, roleKey) {
   const base = lang === "ru" ? systemRu : systemEn;
   const modes = lang === "ru" ? modesRu : modesEn;
   const modeText = modes[modeName] || modes.base || "";
-  return modeText ? `${base.trim()}\n\nMode: ${modeName}\n${modeText.trim()}` : base;
+  const businessRole = rolePrompt(roleKey, lang);
+
+  return [
+    base.trim(),
+    `Mode: ${modeName}`,
+    modeText.trim(),
+    `Business role: ${roleTitle(roleKey, lang)}`,
+    businessRole
+  ]
+    .filter(Boolean)
+    .join("\n\n");
 }
 
 function getSession(chatId) {
   if (!sessions.has(chatId)) {
-    sessions.set(chatId, { lang: "ru", mode: "qualify", history: [] });
+    sessions.set(chatId, { lang: "ru", mode: "qualify", role: DEFAULT_ROLE, history: [] });
   }
   return sessions.get(chatId);
 }
 
+function roleKeysList() {
+  return Object.keys(ROLES).join(", ");
+}
+
+function buildRoleKeyboard(lang) {
+  const rows = Object.keys(ROLES).map((k) => [{ text: `🎯 ${roleTitle(k, lang)}` }]);
+  return {
+    keyboard: rows,
+    resize_keyboard: true,
+    one_time_keyboard: false
+  };
+}
+
 function helpText(lang) {
+  const roleInfo = Object.keys(ROLES)
+    .map((k) => `- ${k}: ${roleTitle(k, lang)}`)
+    .join("\n");
+
   if (lang === "ru") {
     return [
       "Я — Миранда, AI-отдел продаж.",
@@ -60,8 +131,13 @@ function helpText(lang) {
       "/mode closing — перевод в следующий шаг",
       "/mode followup — итог и follow-up сообщение",
       "/lang ru|en — язык ответов",
+      "/roles — показать меню ролей",
+      "/role <key> — выбрать роль вручную",
       "/reset — очистить контекст",
-      "/help — помощь"
+      "/help — помощь",
+      "",
+      "Доступные бизнес-роли:",
+      roleInfo
     ].join("\n");
   }
 
@@ -75,9 +151,28 @@ function helpText(lang) {
     "/mode closing — move to next step",
     "/mode followup — summary and follow-up draft",
     "/lang ru|en — response language",
+    "/roles — show role menu",
+    "/role <key> — set role manually",
     "/reset — clear context",
-    "/help — help"
+    "/help — help",
+    "",
+    "Available business roles:",
+    roleInfo
   ].join("\n");
+}
+
+function parseCommand(text) {
+  const parts = String(text || "").trim().split(/\s+/);
+  const raw = parts[0] || "";
+  if (!raw.startsWith("/")) return { cmd: "", args: [] };
+  const cmd = raw.split("@")[0].toLowerCase();
+  const args = parts.slice(1);
+  return { cmd, args };
+}
+
+function matchRoleFromMenuText(text, lang) {
+  const cleaned = String(text || "").replace(/^🎯\s*/, "").trim().toLowerCase();
+  return Object.keys(ROLES).find((k) => roleTitle(k, lang).toLowerCase() === cleaned);
 }
 
 async function tg(method, payload = {}) {
@@ -91,21 +186,17 @@ async function tg(method, payload = {}) {
   return data.result;
 }
 
-async function sendMessage(chatId, text) {
-  return tg("sendMessage", { chat_id: chatId, text });
+async function sendMessage(chatId, text, options = {}) {
+  return tg("sendMessage", { chat_id: chatId, text, ...options });
 }
 
 async function sendTyping(chatId) {
   return tg("sendChatAction", { chat_id: chatId, action: "typing" });
 }
 
-function parseCommand(text) {
-  const parts = String(text || "").trim().split(/\s+/);
-  const raw = parts[0] || "";
-  if (!raw.startsWith("/")) return { cmd: "", args: [] };
-  const cmd = raw.split("@")[0].toLowerCase(); // supports /start@BotName
-  const args = parts.slice(1);
-  return { cmd, args };
+async function sendRolesMenu(chatId, lang) {
+  const title = lang === "ru" ? "Выберите бизнес-роль для бота:" : "Choose business role for the bot:";
+  await sendMessage(chatId, title, { reply_markup: buildRoleKeyboard(lang) });
 }
 
 async function handleCommand(chatId, text, session) {
@@ -114,11 +205,17 @@ async function handleCommand(chatId, text, session) {
 
   if (cmd === "/start" || cmd === "/help") {
     await sendMessage(chatId, helpText(session.lang));
+    await sendRolesMenu(chatId, session.lang);
     return true;
   }
 
   if (cmd === "/reset") {
-    sessions.set(chatId, { lang: session.lang || "ru", mode: "qualify", history: [] });
+    sessions.set(chatId, {
+      lang: session.lang || "ru",
+      mode: "qualify",
+      role: session.role || DEFAULT_ROLE,
+      history: []
+    });
     await sendMessage(chatId, session.lang === "ru" ? "Контекст очищен." : "Context cleared.");
     return true;
   }
@@ -131,6 +228,26 @@ async function handleCommand(chatId, text, session) {
     }
     session.lang = lang;
     await sendMessage(chatId, lang === "ru" ? "Язык: русский." : "Language: English.");
+    await sendRolesMenu(chatId, session.lang);
+    return true;
+  }
+
+  if (cmd === "/roles") {
+    await sendRolesMenu(chatId, session.lang);
+    return true;
+  }
+
+  if (cmd === "/role") {
+    const roleKey = (args[0] || "").toLowerCase();
+    if (!ROLES[roleKey]) {
+      await sendMessage(chatId, `Unknown role. Available: ${roleKeysList()}`);
+      return true;
+    }
+    session.role = roleKey;
+    const msg = session.lang === "ru"
+      ? `Роль установлена: ${roleTitle(roleKey, session.lang)}.`
+      : `Role set: ${roleTitle(roleKey, session.lang)}.`;
+    await sendMessage(chatId, msg);
     return true;
   }
 
@@ -146,7 +263,6 @@ async function handleCommand(chatId, text, session) {
     return true;
   }
 
-  // Unknown command: show help instead of silence
   await sendMessage(chatId, helpText(session.lang));
   return true;
 }
@@ -160,9 +276,20 @@ async function handleUserMessage(chatId, text) {
     if (processed) return;
   }
 
+  const selectedByMenu = matchRoleFromMenuText(text, session.lang);
+  if (selectedByMenu) {
+    session.role = selectedByMenu;
+    const msg = session.lang === "ru"
+      ? `Роль установлена: ${roleTitle(selectedByMenu, session.lang)}.`
+      : `Role set: ${roleTitle(selectedByMenu, session.lang)}.`;
+    await sendMessage(chatId, msg);
+    return;
+  }
+
   const lang = session.lang || detectLang(text);
   const mode = session.mode || "qualify";
-  const systemPrompt = buildSystemPrompt(lang, mode);
+  const role = session.role || DEFAULT_ROLE;
+  const systemPrompt = buildSystemPrompt(lang, mode, role);
 
   const messages = [{ role: "system", content: systemPrompt }, ...session.history, { role: "user", content: text }];
 
