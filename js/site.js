@@ -64,7 +64,7 @@ $(document).ready(function () {
 			titleKey: "projects.modal.project1.title",
 			descriptionKey: "projects.modal.project1.description",
 			links: [
-				{ labelKey: "projects.modal.project1.link", url: "https://scanyomail.com" }
+				{ labelKey: "projects.modal.project1.link", url: "https://kaznakov.github.io/awosd" }
 			],
 			screenshots: [
 				"images/projects_images/project_image_001.jpg"
@@ -84,7 +84,7 @@ $(document).ready(function () {
 			titleKey: "projects.modal.project3.title",
 			descriptionKey: "projects.modal.project3.description",
 			links: [
-				{ labelKey: "projects.modal.project3.link", url: "https://kaznakov.net" }
+				{ labelKey: "projects.modal.project3.link", url: "https://apps.apple.com/us/app/scanyomail/id6756759760" }
 			],
 			screenshots: [
 				"images/projects_images/project_image_003.jpg"
@@ -94,30 +94,30 @@ $(document).ready(function () {
 			titleKey: "projects.modal.project4.title",
 			descriptionKey: "projects.modal.project4.description",
 			links: [
-				{ labelKey: "projects.modal.project4.link", url: "https://kaznakov.net" }
+				{ labelKey: "projects.modal.project4.link", url: "#" }
 			],
 			screenshots: [
-				"images/projects_images/project_image_001.jpg"
+				"images/projects_images/project_image_004.jpg"
 			]
 		},
 		{
 			titleKey: "projects.modal.project5.title",
 			descriptionKey: "projects.modal.project5.description",
 			links: [
-				{ labelKey: "projects.modal.project5.link", url: "https://kaznakov.net" }
+				{ labelKey: "projects.modal.project5.link", url: "#" }
 			],
 			screenshots: [
-				"images/projects_images/project_image_002.jpg"
+				"images/projects_images/project_image_005.jpg"
 			]
 		},
 		{
 			titleKey: "projects.modal.project6.title",
 			descriptionKey: "projects.modal.project6.description",
 			links: [
-				{ labelKey: "projects.modal.project6.link", url: "https://kaznakov.net" }
+				{ labelKey: "projects.modal.project6.link", url: "#" }
 			],
 			screenshots: [
-				"images/projects_images/project_image_003.jpg"
+				"images/projects_images/project_image_006.jpg"
 			]
 		}
 	];
