@@ -15,6 +15,8 @@
 - `js/i18n.js` — translation dictionary and runtime language switching.
 - `js/carousel.js` — carousel mechanics.
 - `js/agent.js` + `agent/` — AI-agent related frontend/backend prompt/server assets.
+- `agent/telegram-bot.js` — separate Telegram runtime for Miranda as AI Sales Department.
+- `agent/TELEGRAM_SETUP.md` — Telegram deployment/run instructions.
 - `images/`, `fonts/` — static assets.
 - `scanyomail/legal/` — legal docs (privacy policy markdown/html).
 
