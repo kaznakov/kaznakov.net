@@ -42,8 +42,8 @@
       "projects.modal.project2.title": "KAZNAKOV.NET",
       "projects.modal.project2.description": "Personal website with an AI assistant and bilingual interface.",
       "projects.modal.project2.link": "Open website",
-      "projects.modal.project3.title": "Agent Miranda",
-      "projects.modal.project3.description": "Experimental AI agent for consultations and prompt-engineering demos.",
+      "projects.modal.project3.title": "AI-отдел продаж",
+      "projects.modal.project3.description": "AI sales assistant for lead qualification, offer navigation, and next-step booking.",
       "projects.modal.project3.link": "View documentation",
       "projects.modal.project4.title": "AI Catalog",
       "projects.modal.project4.description": "Curated AI tools catalog with filters, ratings, and practical use cases.",
@@ -85,11 +85,11 @@
 
       "footer.madeby": 'Made with love by <a href="https://www.shapingrain.com">ShapingRain</a>',
 
-      "agent.title": "Miranda",
+      "agent.title": "AI Sales Department",
       "agent.placeholder": "Type your message...",
 
-      "agent.greet1": "Hi! I’m Miranda — a virtual assistant for Alexey Kaznakov. You can ask me about Alexey, as well as the projects and products we’re building.",
-      "agent.greet2": "Try my modes by using these commands: /assistant or /saler",
+      "agent.greet1": "Hi! I’m the AI Sales Department. I help you choose the right service, estimate scope, and move to the next step quickly.",
+      "agent.greet2": "Share your goal, timeline, and budget range — I will suggest the best format and next step.",
     },
 
     ru: {
@@ -130,8 +130,8 @@
       "projects.modal.project2.title": "KAZNAKOV.NET",
       "projects.modal.project2.description": "Персональный сайт с AI-ассистентом и двуязычным интерфейсом.",
       "projects.modal.project2.link": "Открыть сайт",
-      "projects.modal.project3.title": "Agent Miranda",
-      "projects.modal.project3.description": "Экспериментальный AI-агент для консультаций и демонстрации prompt-engineering.",
+      "projects.modal.project3.title": "AI-отдел продаж",
+      "projects.modal.project3.description": "AI-помощник отдела продаж для квалификации заявок, подбора формата и согласования следующего шага.",
       "projects.modal.project3.link": "Документация",
       "projects.modal.project4.title": "AI Catalog",
       "projects.modal.project4.description": "Каталог AI-инструментов с фильтрами, рейтингами и реальными сценариями.",
@@ -173,11 +173,11 @@
 
       "footer.madeby": 'Сделано с любовью — <a href="https://www.shapingrain.com">ShapingRain</a>',
 
-      "agent.title": "Миранда",
+      "agent.title": "AI-отдел продаж",
       "agent.placeholder": "Введите сообщение...",
 
-      "agent.greet1": "Привет! Я Миранда. Виртуальный ассиситен Алексея Казнакова. Вы можете спроситьменя об авторе, проектах и продуктах, которые мы разрабатываем",
-      "agent.greet2": "Попробуйте мои режимы: /assistant или /saler."
+      "agent.greet1": "Привет! Я AI-отдел продаж. Помогу выбрать подходящий формат, оценить объём работ и перейти к следующему шагу.",
+      "agent.greet2": "Напишите задачу, сроки и ориентир по бюджету — предложу лучший вариант и следующий шаг."
     }
   };
 
