@@ -7,18 +7,23 @@
 //    - мы перепривязываем клик на window.scrollTo({top:0}) при загрузке и при kaz:langChanged.
 // 2) Остальная логика без изменений.
 
-function getMirandaApiUrl() {
+function getSalesAgentApiCandidates() {
   const host = window.location.hostname;
   const isLocal =
     host === "localhost" ||
     host === "127.0.0.1" ||
     host === "0.0.0.0";
 
-  if (isLocal) return "http://localhost:3030/api/chat";
-  return "https://kaznakov-net.onrender.com/api/chat";
+  if (isLocal) {
+    return ["http://localhost:3030/api/chat", "/api/chat"];
+  }
+
+  // 1) same-origin proxy (if configured), 2) direct Render fallback
+  return ["/api/chat", "https://kaznakov-net.onrender.com/api/chat"];
 }
 
-const MIRANDA_API_URL = getMirandaApiUrl();
+const SALES_AGENT_API_CANDIDATES = getSalesAgentApiCandidates();
+let activeSalesApiUrl = SALES_AGENT_API_CANDIDATES[0] || "";
 
 function getLang() {
   try {
@@ -36,8 +41,8 @@ function t(key) {
   } catch (_) {}
 
   const fallback = {
-    "agent.greet1": "Hi! I'm Miranda. How can I help?",
-    "agent.greet2": "Try commands: /mode critic or /mode optimizer. Language: /lang en or /lang ru.",
+    "agent.greet1": "Hi! I'm the AI Sales Department. How can I help?",
+    "agent.greet2": "Share your goal, timeline, and budget range. I'll suggest the best next step.",
     "agent.greet3": "Current backend: ",
     "agent.placeholder": "Type your message..."
   };
@@ -79,15 +84,15 @@ document.addEventListener("DOMContentLoaded", function () {
   bindTopButton();
 
   // -----------------------------
-  // Miranda — основной код
+  // AI Sales Department — основной код
   // -----------------------------
   if (!toggle || !win || !form || !input || !messagesEl) {
-    console.error("Miranda: missing DOM elements. Check ids in index.html");
+    console.error("AI Sales Department: missing DOM elements. Check ids in index.html");
     return;
   }
 
   const history = [];
-  let currentMode = "mentor";
+  let currentMode = "qualify";
   let currentLang = getLang();
   let firstOpen = true;
 
@@ -97,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
     div.textContent =
       (role === "user"
         ? (currentLang === "ru" ? "Вы: " : "You: ")
-        : "Miranda: ") + text;
+        : "AI Sales: ") + text;
     messagesEl.appendChild(div);
     messagesEl.scrollTop = messagesEl.scrollHeight;
   }
@@ -110,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!firstOpen) return;
     appendMessage("assistant", t("agent.greet1"));
     appendMessage("assistant", t("agent.greet2"));
-    appendMessage("assistant", t("agent.greet3") + MIRANDA_API_URL);
+    appendMessage("assistant", t("agent.greet3") + activeSalesApiUrl);
     firstOpen = false;
   }
 
@@ -182,6 +187,60 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("resize", updateFloatingButtonsOffset);
   updateFloatingButtonsOffset();
 
+  async function postChatWithFallback(payload) {
+    let lastError = null;
+
+    for (const url of SALES_AGENT_API_CANDIDATES) {
+      try {
+        const resp = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        let data;
+        try {
+          data = await resp.json();
+        } catch (_) {
+          throw new Error(`Backend returned non-JSON. HTTP ${resp.status}`);
+        }
+
+        if (!resp.ok || data.error) {
+          throw new Error(data?.details || data?.error || `HTTP ${resp.status}`);
+        }
+
+        activeSalesApiUrl = url;
+        return data;
+      } catch (err) {
+        lastError = err;
+      }
+    }
+
+    throw lastError || new Error("All API endpoints failed");
+  }
+
+  function buildOfflineSalesReply(lang, userText) {
+    const text = (userText || "").toLowerCase();
+
+    if (lang === "ru") {
+      if (/цена|стоим|бюджет|price/.test(text)) {
+        return "AI-канал сейчас нестабилен, но могу сразу собрать бриф для оценки. Напишите: 1) ниша/продукт, 2) задача, 3) желаемый срок, 4) ориентир бюджета. После этого передам запрос и вернусь с вилкой по стоимости.";
+      }
+      if (/срок|когда|deadline|быстро/.test(text)) {
+        return "Чтобы оценить срок, пришлите 3 пункта: объём задачи, текущие материалы/доступы, желаемая дата запуска. Я зафиксирую запрос и передам в работу.";
+      }
+      return "AI-канал временно недоступен, но я могу продолжить как отдел продаж. Пришлите коротко: цель проекта, нишу, срок, бюджет и контакт (Telegram/email). Также можно сразу написать: Telegram @kaznakov, email alex@kaznakov.net.";
+    }
+
+    if (/price|budget|cost/.test(text)) {
+      return "The AI channel is unstable right now, but I can collect a brief for estimation immediately. Please share: 1) niche/product, 2) target outcome, 3) timeline, 4) budget range. I'll pass it to the team and follow up with a price range.";
+    }
+    if (/timeline|deadline|when|asap/.test(text)) {
+      return "To estimate timeline, please share: scope, existing assets/access, and desired launch date. I will log it and pass it to the team.";
+    }
+    return "The AI channel is temporarily unavailable, but I can continue as the sales desk. Please share your goal, niche, timeline, budget, and contact (Telegram/email). You can also contact directly: Telegram @kaznakov, email alex@kaznakov.net.";
+  }
+
   // ----------------------------------------------------------
   // Chat submit
   // ----------------------------------------------------------
@@ -197,8 +256,8 @@ document.addEventListener("DOMContentLoaded", function () {
         appendMessage("assistant", currentLang === "ru" ? `Режим: ${m}.` : `Mode set to: ${m}.`);
       } else {
         appendMessage("assistant", currentLang === "ru"
-          ? "Укажите режим, например: /mode mentor /mode critic /mode optimizer"
-          : "Specify a mode, e.g.: /mode mentor /mode critic /mode optimizer");
+          ? "Укажите режим, например: /mode qualify /mode offer /mode closing"
+          : "Specify a mode, e.g.: /mode qualify /mode offer /mode closing");
       }
       input.value = "";
       return;
@@ -229,29 +288,22 @@ document.addEventListener("DOMContentLoaded", function () {
     if (sendBtn) sendBtn.disabled = true;
 
     try {
-      const resp = await fetch(MIRANDA_API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text, history, mode: currentMode, lang: currentLang })
+      const data = await postChatWithFallback({
+        message: text,
+        history,
+        mode: currentMode,
+        lang: currentLang
       });
-
-      let data;
-      try {
-        data = await resp.json();
-      } catch (_) {
-        throw new Error(`Backend returned non-JSON. HTTP ${resp.status}`);
-      }
-
-      if (!resp.ok || data.error) {
-        throw new Error(data?.details || data?.error || `HTTP ${resp.status}`);
-      }
 
       const reply = data.reply || "";
       history.push({ role: "user", content: text });
       history.push({ role: "assistant", content: reply });
       appendMessage("assistant", reply || (currentLang === "ru" ? "(пустой ответ)" : "(empty reply)"));
     } catch (err) {
-      appendMessage("assistant", (currentLang === "ru" ? "Ошибка: " : "Error: ") + (err.message || err));
+      console.error("AI Sales chat error:", err);
+      const offlineReply = buildOfflineSalesReply(currentLang, text);
+      history.push({ role: "assistant", content: offlineReply });
+      appendMessage("assistant", offlineReply);
     } finally {
       if (sendBtn) sendBtn.disabled = false;
     }
